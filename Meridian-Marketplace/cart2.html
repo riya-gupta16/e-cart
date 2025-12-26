@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meridian Marketplace - Cart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+       
+
+
+        :root {
+            --primary-color: #6B87C7;
+            --secondary-color: #8FA6D4;
+            --accent-color: #5C77A2;
+            --text-color: #E6E6E6;   /* softer white */
+            --bg-color: #121212;     /* deeper black */
+            --card-bg: #1E1E1E;      /* better card contrast */
+
+            --success-color: #6A9362;
+            --warning-color: #D4A574;
+            --error-color: #C76B6B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        p, span, li, small {
+    color: #D0D0D0;   /* consistent readable text */
+        }
+
+
+        .sticky-header {
+            background-color: var(--card-bg);
+            padding: 1rem 0;
+            border-bottom: 1px solid #444;
+        }
+
+        .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #C9D7FF;
+            text-decoration: none;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .cart-btn {
+            position: relative;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.8rem;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .cart-page {
+            max-width: 900px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .cart-page h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #C9D7FF;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            background-color: var(--card-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #444;
+            transition: transform 0.2s ease;
+        }
+
+        .cart-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 1.5rem;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-details h4 {
+            margin: 0 0 0.5rem 0;
+            color: #F1F1F1;
+        }
+        .cart-item-details p,
+        .cart-item-details small {
+             color: #BFC7D5;  /* muted bluish-grey */
+        }
+
+
+        .cart-item-price {
+            font-weight: bold;
+            color:  #9DB4FF;
+        }
+
+        .eco-points-badge {
+            background: linear-gradient(135deg, var(--success-color), var(--warning-color));
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+
+        .remove-btn {
+            background: var(--error-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: auto;
+            transition: background-color 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background-color: #a04545;
+        }
+
+        /* Enhanced Sustainability Progress */
+        .sustainability-progress {
+            background: linear-gradient(135deg, var(--card-bg), rgba(106, 147, 98, 0.1));
+            border: 2px solid var(--success-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .progress-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .sustainability-title {
+            color: var(--success-color);
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .eco-score {
+            background-color: var(--success-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .progress-container {
+            position: relative;
+            background-color: #333;
+            height: 25px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), var(--warning-color), var(--primary-color));
+            border-radius: 12px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+            z-index: 1;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .eco-benefits {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .eco-benefit {
+            text-align: center;
+            opacity: 0.4;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 8px;
+        }
+
+        .eco-benefit.unlocked {
+            opacity: 1;
+            background: rgba(106, 147, 98, 0.2);
+            transform: scale(1.05);
+        }
+
+        .eco-benefit i {
+            font-size: 1.5rem;
+            color: var(--success-color);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Games Section */
+        .games-section {
+            background: linear-gradient(135deg, var(--card-bg), rgba(107, 135, 199, 0.1));
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .games-section p {
+            color: #DADADA;   /* improves readability */
+        }
+
+
+        .games-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(107, 135, 199, 0.3);
+        }
+
+        .games-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(107, 135, 199, 0.4);
+        }
+
+        .games-status {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: var(--bg-color);
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+
+        .game-status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.5rem 0;
+        }
+
+        .status-completed {
+            color: var(--success-color);
+        }
+
+        .status-pending {
+            color: var(--secondary-color);
+        }
+
+        /* Enhanced Discount Display */
+        .discount-breakdown {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border: 1px solid var(--success-color);
+        }
+
+        .discount-title {
+            color: var(--success-color);
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .discount-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background-color: var(--bg-color);
+            border-radius: 8px;
+        }
+
+        .discount-label {
+            font-size: 1rem;
+           color: #E0E0E0;
+
+        }
+
+        .discount-value {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .discount-value.eco {
+            color: var(--success-color);
+        }
+
+        .discount-value.game {
+            color: var(--primary-color);
+        }
+
+        .discount-value.total {
+            color: var(--warning-color);
+            font-size: 1.3rem;
+        }
+
+        .total-section {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid var(--primary-color);
+            margin: 2rem 0;
+        }
+
+        .price-breakdown {
+            margin-bottom: 1rem;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .price-row.original {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .price-row.final {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--success-color);
+            border-top: 1px solid #444;
+            padding-top: 0.5rem;
+        }
+
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .payment-message {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            color: var(--success-color);
+            display: none;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            border: 1px solid #444;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .close:hover {
+            color: var(--error-color);
+        }
+
+        .games-list {
+            display: grid;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .game-option {
+            background-color: var(--bg-color);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 2px solid var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .game-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(107, 135, 199, 0.3);
+        }
+
+        .game-option.completed {
+            border-color: var(--success-color);
+            background-color: rgba(106, 147, 98, 0.1);
+        }
+
+        .game-option.completed h3 {
+            color: var(--success-color);
+        }
+
+        .game-option h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Game Interfaces */
+        .game-interface {
+            display: none;
+            text-align: center;
+        }
+
+        .game-header {
+            margin-bottom: 2rem;
+        }
+
+        .game-header h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+
+        .product-display {
+            background: var(--bg-color);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border: 1px solid #444;
+        }
+
+        .product-display img {
+            max-width: 150px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .game-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .game-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0 0.5rem;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+        }
+
+        .game-btn:hover {
+            background-color: var(--accent-color);
+        }
+
+        .game-btn:disabled {
+            background-color: #666;
+            cursor: not-allowed;
+        }
+
+        .game-btn.success {
+            background-color: var(--success-color);
+        }
+
+        .game-btn.error {
+            background-color: var(--error-color);
+        }
+
+        .feedback-message {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .feedback-message.success, .feedback-message.correct {
+            background-color: rgba(106, 147, 98, 0.2);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .feedback-message.error, .feedback-message.incorrect {
+            background-color: rgba(199, 107, 107, 0.2);
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+
+        /* Drag & Drop Game */
+        .drag-drop-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+
+        .locations, .products {
+            background-color: var(--bg-color);
+            padding: 1rem;
+            border-radius: 10px;
+            min-height: 300px;
+            border: 1px solid #444;
+        }
+
+        .column-title {
+            color: var(--secondary-color);
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .drag-item, .drop-zone {
+            background-color: var(--card-bg);
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            cursor: grab;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .drag-item:active {
+            cursor: grabbing;
+        }
+
+        .drop-zone {
+            min-height: 50px;
+            border-style: dashed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+        }
+
+        .drop-zone.drag-over {
+            background-color: rgba(107, 135, 199, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .drop-zone.correct {
+            background-color: rgba(106, 147, 98, 0.2);
+            color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .drag-drop-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 2% auto;
+                padding: 1rem;
+            }
+            
+            .cart-page {
+                padding: 0 1rem;
+            }
+
+            .eco-benefits {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .game-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="sticky-header">
+        <nav class="main-nav">
+            <a href="index.html" class="logo">Meridian</a>
+            <div class="nav-actions">
+                <form id="search-form" class="search-container">
+                    <input type="text" id="search-bar" name="query" placeholder="Search products...">
+                </form>
+                <button class="cart-btn" id="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count" class="cart-count">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="cart-page">
+        <h1>Your Shopping Cart</h1>
+        
+        <div id="cart-items" class="cart-items-container">
+        </div>
+        
+        <!-- Enhanced Sustainability Progress -->
+        <div id="sustainability-progress" class="sustainability-progress" style="display: none;">
+            <div class="progress-header">
+                <div class="sustainability-title">
+                    <i class="fas fa-leaf"></i> Sustainability Progress
+                </div>
+                <div class="eco-score" id="eco-score">0 Points</div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-fill" id="progress-fill" style="width: 0%;">
+                    <div class="progress-text" id="progress-text">0%</div>
+                </div>
+            </div>
+            <div class="eco-benefits">
+                <div class="eco-benefit" id="benefit-1">
+                    <i class="fas fa-percent"></i>
+                    <div>10% Off<br><small>At 50%</small></div>
+                </div>
+                <div class="eco-benefit" id="benefit-2">
+                    <i class="fas fa-tags"></i>
+                    <div>25% Off<br><small>At 75%</small></div>
+                </div>
+                <div class="eco-benefit" id="benefit-3">
+                    <i class="fas fa-trophy"></i>
+                    <div>30% Off<br><small>At 100%</small></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Discount Display -->
+        <div id="discount-breakdown" class="discount-breakdown" style="display: none;">
+            <div class="discount-title">💰 Your Discounts & Savings</div>
+            
+            <div class="discount-item">
+                <span class="discount-label">🌱 Sustainability Discount:</span>
+                <span class="discount-value eco" id="eco-discount">0%</span>
+            </div>
+            
+            <div class="discount-item">
+                <span class="discount-label">🎮 Game Discounts:</span>
+                <span class="discount-value game" id="game-discount">0%</span>
+            </div>
+            
+            <div class="discount-item" style="border-top: 1px solid #444; margin-top: 1rem; padding-top: 1rem;">
+                <span class="discount-label"><strong>🎉 Total Applied Discount:</strong></span>
+                <span class="discount-value total" id="total-discount">0%</span>
+            </div>
+            
+            <div class="discount-item">
+                <span class="discount-label"><strong>💵 Total Savings:</strong></span>
+                <span class="discount-value total" id="total-savings">$0.00</span>
+            </div>
+        </div>
+
+        <!-- Total Section -->
+        <div class="total-section">
+            <div class="price-breakdown">
+                <div class="price-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">$0.00</span>
+                </div>
+                <div class="price-row original" id="original-total-row" style="display: none;">
+                    <span>Original Total:</span>
+                    <span id="original-total">$0.00</span>
+                </div>
+                <div class="price-row final">
+                    <span>Final Total:</span>
+                    <span id="final-total">$0.00</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Games Section -->
+        <div class="games-section" id="games-section" style="display: none;">
+            <h3><i class="fas fa-gamepad"></i> Play Games & Challenges for Extra Discounts!</h3>
+            <p>Complete fun challenges and unlock amazing offers on your cart</p>
+            <button id="games-btn" class="games-btn">
+                <i class="fas fa-gamepad"></i> Play Games for Offers!
+            </button>
+            <div id="games-status" class="games-status" style="display: none;">
+                <div class="game-status-item">
+                    <span>🧠 Sustainability Quiz:</span>
+                    <span id="quiz-status" class="status-pending">Not completed</span>
+                </div>
+                <div class="game-status-item">
+                    <span>🧩 Location Match:</span>
+                    <span id="match-status" class="status-pending">Not completed</span>
+                </div>
+            </div>
+        </div>
+
+        <button id="checkout-btn" class="checkout-btn" style="display: none;">Proceed to Payment</button>
+        <p id="payment-message" class="payment-message"></p>
+    </main>
+
+    <!-- Games Modal -->
+    <div id="games-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            
+            <!-- Games Selection -->
+            <div id="games-selection">
+                <h2>Choose Your Challenge</h2>
+                <div class="games-list">
+                    <div class="game-option" id="sustainability-option" data-game="sustainability">
+                        <h3><i class="fas fa-leaf"></i> Sustainability Quiz</h3>
+                        <p>Test your knowledge about eco-friendly products</p>
+                        <small><strong>Reward:</strong> Up to 10% discount for 80%+ score</small>
+                    </div>
+                    <div class="game-option" id="matching-option" data-game="matching">
+                        <h3><i class="fas fa-puzzle-piece"></i> Location Match</h3>
+                        <p>Match famous products with their origin locations</p>
+                        <small><strong>Reward:</strong> Up to 15% discount for completion</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sustainability Game -->
+            <div id="sustainability-game" class="game-interface">
+                <div class="game-header">
+                    <h2>Sustainability Quiz</h2>
+                    <div class="game-stats">
+                        <span id="sus-score">Score: 0</span>
+                        <span id="sus-progress">1 of 5</span>
+                    </div>
+                </div>
+                <div id="product-display" class="product-display"></div>
+                <div id="sus-feedback" class="feedback-message" style="display: none;"></div>
+                <div class="game-controls">
+                    <button id="sustainable-btn" class="game-btn success">Sustainable</button>
+                    <button id="not-sustainable-btn" class="game-btn error">Not Sustainable</button>
+                </div>
+            </div>
+
+            <!-- Matching Game -->
+            <div id="matching-game" class="game-interface">
+                <div class="game-header">
+                    <h2>Location Match Puzzle</h2>
+                    <p>Drag the products to their correct origin locations!</p>
+                    <div id="drag-drop-score">Matches: 0/10</div>
+                </div>
+                <div class="drag-drop-container">
+                    <div class="locations">
+                        <div class="column-title">Locations</div>
+                        <div id="drop-zones"></div>
+                    </div>
+                    <div class="products">
+                        <div class="column-title">Products</div>
+                        <div id="drag-items"></div>
+                    </div>
+                </div>
+                <div id="match-feedback" class="feedback-message" style="display: none;"></div>
+                <div class="game-controls">
+                    <button id="check-matches-btn" class="game-btn">Check Matches</button>
+                    <button id="reset-game-btn" class="game-btn">Reset Game</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced product data with sustainability scores
+        const products = [
+            {
+                id: 1, name: "Hand-Painted Vase", price: 45, artisan: "Elena Rodriguez", 
+                category: "pottery", region: "mexico", material: "clay", gender: "women", 
+                isFairTrade: true, isCarbonNeutral: false, sustainabilityMetric: "Recycled", 
+                image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=150", 
+                sustainabilityScore: 20
+            },
+            {
+                id: 2, name: "Eco-Friendly Yoga Mat", price: 75, artisan: "Aisha Khan", 
+                category: "yoga", region: "india", material: "cotton", gender: "women", 
+                isFairTrade: true, isCarbonNeutral: true, sustainabilityMetric: "Biodegradable", 
+                image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=150", 
+                sustainabilityScore: 30
+            },
+            {
+                id: 3, name: "Artisan Coffee Blend", price: 22, artisan: "Marco Rossi", 
+                category: "organic", region: "italy", material: "herbs", gender: "men", 
+                isFairTrade: true, isCarbonNeutral: true, sustainabilityMetric: "Organic", 
+                image: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=150", 
+                sustainabilityScore: 25
+            },
+            {
+                id: 4, name: "Handwoven Scarf", price: 55, artisan: "Sofia Petrova", 
+                category: "accessories", region: "vietnam", material: "cotton", gender: "women", 
+                isFairTrade: true, isCarbonNeutral: false, sustainabilityMetric: "Handcrafted", 
+                image: "https://images.unsplash.com/photo-1520903920243-00d872a2d24f?w=150", 
+                sustainabilityScore: 22
+            },
+            {
+                id: 5, name: "Clay & Herb Infuser", price: 30, artisan: "Wei Chen", 
+                category: "herbal", region: "china", material: "clay", gender: "men", 
+                isFairTrade: false, isCarbonNeutral: false, sustainabilityMetric: "Handcrafted", 
+                image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=150", 
+                sustainabilityScore: 15
+            },
+            {
+                id: 6, name: "Regional Spice Set", price: 40, artisan: "Javier Morales", 
+                category: "regional", region: "mexico", material: "herbs", gender: "men", 
+                isFairTrade: true, isCarbonNeutral: true, sustainabilityMetric: "Organic", 
+                image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=150", 
+                sustainabilityScore: 28
+            },
+            {
+                id: 7, name: "Carved Wooden Bowl", price: 120, artisan: "Lena Schmidt", 
+                category: "woodwork", region: "mexico", material: "wood", gender: "women", 
+                isFairTrade: false, isCarbonNeutral: false, sustainabilityMetric: "Biodegradable", 
+                image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=150", 
+                sustainabilityScore: 18
+            },
+            {
+                id: 8, name: "Ceramic Tea Set", price: 95, artisan: "Kenji Tanaka", 
+                category: "pottery", region: "japan", material: "clay", gender: "men", 
+                isFairTrade: true, isCarbonNeutral: true, sustainabilityMetric: "Handcrafted", 
+                image: "https://images.unsplash.com/photo-1571781419190-892e6b584c8a?w=150", 
+                sustainabilityScore: 26
+            }
+        ];
+
+        // Location-Product pairs for drag & drop game
+        const locationProductPairs = [
+            { location: "Varanasi", product: "Banarasi Saree", image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=100&h=100&fit=crop" },
+            { location: "Kashmir", product: "Pashmina Shawl", image: "https://images.unsplash.com/photo-1589987607648-8de1b98db96f?w=100&h=100&fit=crop" },
+            { location: "Rajasthan", product: "Block Print Fabric", image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=100&h=100&fit=crop" },
+            { location: "Gujarat", product: "Bandhani Textiles", image: "https://images.unsplash.com/photo-1571781418259-e8d8ea6577ac?w=100&h=100&fit=crop" },
+            { location: "Kerala", product: "Coconut Shell Crafts", image: "https://images.unsplash.com/photo-1566024164372-c6ea90d05c6a?w=100&h=100&fit=crop" },
+            { location: "West Bengal", product: "Terracotta Pottery", image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=100&h=100&fit=crop" },
+            { location: "Odisha", product: "Pattachitra Paintings", image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=100&h=100&fit=crop" },
+            { location: "Punjab", product: "Phulkari Embroidery", image: "https://images.unsplash.com/photo-1606914923755-c3fbd4e55040?w=100&h=100&fit=crop" },
+            { location: "Assam", product: "Bamboo Crafts", image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=100&h=100&fit=crop" },
+            { location: "Tamil Nadu", product: "Bronze Sculptures", image: "https://images.unsplash.com/photo-1608213606091-d18bbb2f2b00?w=100&h=100&fit=crop" }
+        ];
+
+        // Game completion tracking
+        let gameCompletionStatus = {
+            sustainability: { completed: false, discount: 0 },
+            matching: { completed: false, discount: 0 }
+        };
+
+        // Cart functionality using localStorage with memory fallback
+        function getCartItems() {
+            // Try localStorage first
+            try {
+                const cartData = localStorage.getItem('cartItems');
+                if (cartData) {
+                    return JSON.parse(cartData);
+                }
+            } catch (e) {
+                console.log('localStorage not available, using memory storage');
+            }
+            
+            // Fallback to memory storage with sample items for demo
+            if (!window.cartData) {
+                window.cartData = [
+                    products.find(p => p.id === 2), // Eco-Friendly Yoga Mat
+                    products.find(p => p.id === 3), // Artisan Coffee Blend
+                    products.find(p => p.id === 6), // Regional Spice Set
+                    products.find(p => p.id === 8)  // Ceramic Tea Set
+                ].filter(Boolean);
+            }
+            return window.cartData;
+        }
+
+        function saveCartItems(items) {
+            window.cartData = items;
+            try {
+                localStorage.setItem('cartItems', JSON.stringify(items));
+            } catch (e) {
+                console.log('localStorage not available for saving');
+            }
+        }
+
+        function updateCartCount() {
+            const cartItems = getCartItems();
+            document.getElementById('cart-count').textContent = cartItems.length;
+        }
+
+        function calculateSustainabilityProgress() {
+            const cartItems = getCartItems();
+            if (cartItems.length === 0) return 0;
+            
+            const totalScore = cartItems.reduce((sum, item) => {
+                return sum + (item.sustainabilityScore || 0);
+            }, 0);
+            
+            // Max possible score per item is 30, so calculate percentage
+            const maxPossibleScore = cartItems.length * 30;
+            return Math.min(100, Math.round((totalScore / maxPossibleScore) * 100));
+        }
+
+        function getSustainabilityDiscount(progress) {
+            if (progress >= 100) return 0.30; // 30% for perfect sustainability
+            if (progress >= 75) return 0.25;  // 25% for 75%+
+            if (progress >= 50) return 0.10;  // 10% for 50%+
+            return 0;
+        }
+
+        function updateSustainabilityProgress() {
+            const progress = calculateSustainabilityProgress();
+            const progressBar = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+            const progressContainer = document.getElementById('sustainability-progress');
+            const ecoScore = document.getElementById('eco-score');
+
+            const cartItems = getCartItems();
+            if (cartItems.length > 0) {
+                progressContainer.style.display = 'block';
+                
+                const totalPoints = cartItems.reduce((sum, item) => sum + (item.sustainabilityScore || 0), 0);
+                
+                progressBar.style.width = progress + '%';
+                progressText.textContent = progress + '%';
+                ecoScore.textContent = `${totalPoints} Points`;
+
+                // Update benefit indicators
+                document.getElementById('benefit-1').classList.toggle('unlocked', progress >= 50);
+                document.getElementById('benefit-2').classList.toggle('unlocked', progress >= 75);
+                document.getElementById('benefit-3').classList.toggle('unlocked', progress >= 100);
+
+                // Store sustainability discount
+                window.sustainabilityDiscount = getSustainabilityDiscount(progress);
+            } else {
+                progressContainer.style.display = 'none';
+                window.sustainabilityDiscount = 0;
+            }
+        }
+
+        function getTotalGameDiscount() {
+            return gameCompletionStatus.sustainability.discount + gameCompletionStatus.matching.discount;
+        }
+
+        function updateGameStatus() {
+            const gamesStatus = document.getElementById('games-status');
+            const quizStatus = document.getElementById('quiz-status');
+            const matchStatus = document.getElementById('match-status');
+            
+            // Show game status if any game has been completed
+            if (gameCompletionStatus.sustainability.completed || gameCompletionStatus.matching.completed) {
+                gamesStatus.style.display = 'block';
+            }
+            
+            // Update individual game statuses
+            if (gameCompletionStatus.sustainability.completed) {
+                quizStatus.textContent = `Completed (${Math.round(gameCompletionStatus.sustainability.discount * 100)}% discount)`;
+                quizStatus.className = 'status-completed';
+                document.getElementById('sustainability-option').classList.add('completed');
+            } else {
+                quizStatus.textContent = 'Not completed';
+                quizStatus.className = 'status-pending';
+            }
+            
+            if (gameCompletionStatus.matching.completed) {
+                matchStatus.textContent = `Completed (${Math.round(gameCompletionStatus.matching.discount * 100)}% discount)`;
+                matchStatus.className = 'status-completed';
+                document.getElementById('matching-option').classList.add('completed');
+            } else {
+                matchStatus.textContent = 'Not completed';
+                matchStatus.className = 'status-pending';
+            }
+        }
+
+        function updateDiscountDisplay() {
+            const sustainabilityDiscount = window.sustainabilityDiscount || 0;
+            const totalGameDiscount = getTotalGameDiscount();
+            const maxDiscount = Math.max(sustainabilityDiscount, totalGameDiscount);
+            
+            const discountBreakdown = document.getElementById('discount-breakdown');
+            
+            if (sustainabilityDiscount > 0 || totalGameDiscount > 0) {
+                discountBreakdown.style.display = 'block';
+                
+                document.getElementById('eco-discount').textContent = `${Math.round(sustainabilityDiscount * 100)}%`;
+                document.getElementById('game-discount').textContent = `${Math.round(totalGameDiscount * 100)}%`;
+                document.getElementById('total-discount').textContent = `${Math.round(maxDiscount * 100)}%`;
+                
+                const cartItems = getCartItems();
+                const originalTotal = cartItems.reduce((sum, item) => sum + item.price, 0);
+                const totalSavings = originalTotal * maxDiscount;
+                
+                document.getElementById('total-savings').textContent = `${totalSavings.toFixed(2)}`;
+            } else {
+                discountBreakdown.style.display = 'none';
+            }
+            
+            return maxDiscount;
+        }
+
+        function renderCart() {
+            const cartItems = getCartItems();
+            const cartContainer = document.getElementById('cart-items');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            const gamesSection = document.getElementById('games-section');
+
+            if (cartItems.length === 0) {
+                cartContainer.innerHTML = '<p style="text-align:center; color:#666;">Your cart is empty. Start shopping!</p>';
+                checkoutBtn.style.display = 'none';
+                gamesSection.style.display = 'none';
+                document.getElementById('sustainability-progress').style.display = 'none';
+                document.getElementById('discount-breakdown').style.display = 'none';
+                updateTotalDisplay(0, 0, 0);
+                return;
+            }
+
+            cartContainer.innerHTML = '';
+            let originalTotal = 0;
+
+            // Render cart items with sustainability scores
+            cartItems.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+                    <div class="cart-item-details">
+                        <h4>${item.name}${item.sustainabilityScore ? `<span class="eco-points-badge">${item.sustainabilityScore} eco-points</span>` : ''}</h4>
+                        <p>by ${item.artisan}</p>
+                        <p class="cart-item-price">${item.price.toFixed(2)}</p>
+                        <small>Material: ${item.material} • Region: ${item.region}</small>
+                    </div>
+                    <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
+                `;
+                cartContainer.appendChild(itemDiv);
+                originalTotal += item.price;
+            });
+
+            checkoutBtn.style.display = 'block';
+            gamesSection.style.display = 'block';
+
+            // Calculate and display discounts
+            updateSustainabilityProgress();
+            updateGameStatus();
+            const maxDiscount = updateDiscountDisplay();
+            
+            const discountAmount = originalTotal * maxDiscount;
+            const finalTotal = originalTotal - discountAmount;
+            
+            updateTotalDisplay(originalTotal, discountAmount, finalTotal);
+        }
+
+        function updateTotalDisplay(originalTotal, discountAmount, finalTotal) {
+            document.getElementById('subtotal').textContent = `${originalTotal.toFixed(2)}`;
+            
+            if (discountAmount > 0) {
+                document.getElementById('original-total-row').style.display = 'flex';
+                document.getElementById('original-total').textContent = `${originalTotal.toFixed(2)}`;
+                document.getElementById('final-total').textContent = `${finalTotal.toFixed(2)}`;
+            } else {
+                document.getElementById('original-total-row').style.display = 'none';
+                document.getElementById('final-total').textContent = `${originalTotal.toFixed(2)}`;
+            }
+        }
+
+        function removeFromCart(productId) {
+            const cartItems = getCartItems();
+            const updatedItems = cartItems.filter(item => item.id !== productId);
+            saveCartItems(updatedItems);
+            updateCartCount();
+            renderCart();
+        }
+
+        function addToCart(productId) {
+            const cartItems = getCartItems();
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                cartItems.push(product);
+                saveCartItems(cartItems);
+                updateCartCount();
+                renderCart();
+            }
+        }
+
+        function processPayment() {
+            // Clear cart and reset game status
+            window.cartData = [];
+            gameCompletionStatus = {
+                sustainability: { completed: false, discount: 0 },
+                matching: { completed: false, discount: 0 }
+            };
+            window.sustainabilityDiscount = 0;
+            
+            try {
+                localStorage.removeItem('cartItems');
+            } catch (e) {
+                console.log('localStorage not available');
+            }
+            
+            // Hide game status section and reset styling
+            document.getElementById('games-status').style.display = 'none';
+            document.getElementById('sustainability-option').classList.remove('completed');
+            document.getElementById('matching-option').classList.remove('completed');
+            
+            renderCart();
+            updateCartCount();
+            
+            const checkoutBtn = document.getElementById('checkout-btn');
+            const paymentMessage = document.getElementById('payment-message');
+            
+            checkoutBtn.style.display = 'none';
+            paymentMessage.textContent = 'Payment Successful! Thank you for your purchase.';
+            paymentMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                paymentMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        // Quiz Game Logic
+        let shuffledProducts = [];
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        const totalQuizRounds = 5;
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function startSustainabilityGame() {
+            if (gameCompletionStatus.sustainability.completed) {
+                alert('You have already completed the Sustainability Quiz!');
+                return;
+            }
+            
+            shuffledProducts = shuffleArray(products);
+            currentQuizIndex = 0;
+            quizScore = 0;
+            
+            document.getElementById('games-selection').style.display = 'none';
+            document.getElementById('sustainability-game').style.display = 'block';
+            
+            updateQuizDisplay();
+        }
+
+        function updateQuizDisplay() {
+            if (currentQuizIndex >= totalQuizRounds) {
+                endSustainabilityGame();
+                return;
+            }
+            
+            const currentProduct = shuffledProducts[currentQuizIndex];
+            document.getElementById('product-display').innerHTML = `
+                <img src="${currentProduct.image}" alt="${currentProduct.name}" style="max-width: 150px; border-radius: 8px; margin-bottom: 1rem;">
+                <h3>${currentProduct.name}</h3>
+                <p>by ${currentProduct.artisan}</p>
+                <p><strong>Material:</strong> ${currentProduct.material}</p>
+                <p><strong>Region:</strong> ${currentProduct.region}</p>
+                <p><strong>Sustainability Score:</strong> ${currentProduct.sustainabilityScore}/30</p>
+            `;
+            
+            document.getElementById('sus-score').textContent = `Score: ${quizScore}`;
+            document.getElementById('sus-progress').textContent = `${currentQuizIndex + 1} of ${totalQuizRounds}`;
+            
+            document.getElementById('sus-feedback').style.display = 'none';
+            document.getElementById('sustainable-btn').style.display = 'inline-block';
+            document.getElementById('not-sustainable-btn').style.display = 'inline-block';
+        }
+
+        function checkSustainabilityAnswer(isSustainable) {
+            const currentProduct = shuffledProducts[currentQuizIndex];
+            const isActuallySustainable = currentProduct.isFairTrade || currentProduct.isCarbonNeutral || currentProduct.sustainabilityScore >= 20;
+            
+            const feedbackEl = document.getElementById('sus-feedback');
+            
+            if (isSustainable === isActuallySustainable) {
+                quizScore++;
+                feedbackEl.textContent = `Correct! This product is ${isActuallySustainable ? 'sustainable' : 'not fully sustainable'}.`;
+                feedbackEl.className = 'feedback-message success';
+            } else {
+                feedbackEl.textContent = `Incorrect. This product is ${isActuallySustainable ? 'sustainable' : 'not fully sustainable'}.`;
+                feedbackEl.className = 'feedback-message error';
+            }
+            
+            feedbackEl.style.display = 'block';
+            currentQuizIndex++;
+            
+            setTimeout(() => {
+                updateQuizDisplay();
+            }, 1500);
+        }
+
+        function endSustainabilityGame() {
+            const percentage = Math.round((quizScore / totalQuizRounds) * 100);
+            let message = `Quiz Complete! You scored ${quizScore} out of ${totalQuizRounds} (${percentage}%).`;
+            let discount = 0;
+            
+            if (percentage >= 80) {
+                discount = 0.10;
+                message += '<br>🎉 Excellent! You earned a 10% sustainability quiz discount!';
+            } else if (percentage >= 60) {
+                discount = 0.08;
+                message += '<br>🌟 Good job! You earned an 8% sustainability quiz discount!';
+            } else if (percentage >= 40) {
+                discount = 0.05;
+                message += '<br>👍 Keep learning! You earned a 5% sustainability quiz discount!';
+            } else {
+                discount = 0.02;
+                message += '<br>📚 Try harder next time! You earned a 2% participation discount!';
+            }
+            
+            document.getElementById('product-display').innerHTML = `<h3>${message}</h3>`;
+            document.getElementById('sustainable-btn').style.display = 'none';
+            document.getElementById('not-sustainable-btn').style.display = 'none';
+            
+            gameCompletionStatus.sustainability.completed = true;
+            gameCompletionStatus.sustainability.discount = discount;
+            
+            renderCart();
+            
+            setTimeout(() => {
+                closeGamesModal();
+            }, 3000);
+        }
+
+        // Drag & Drop Game Logic
+        let dragDropMatches = 0;
+        let dragDropPairs = [];
+
+        function startMatchingGame() {
+            if (gameCompletionStatus.matching.completed) {
+                alert('You have already completed the Location Match game!');
+                return;
+            }
+            
+            document.getElementById('games-selection').style.display = 'none';
+            document.getElementById('matching-game').style.display = 'block';
+            
+            setupMatchingGame();
+        }
+
+        function setupMatchingGame() {
+            dragDropMatches = 0;
+            dragDropPairs = shuffleArray(locationProductPairs).slice(0, 10);
+            
+            const dropZones = document.getElementById('drop-zones');
+            const dragItems = document.getElementById('drag-items');
+            
+            dropZones.innerHTML = '';
+            dragItems.innerHTML = '';
+            
+            // Create drop zones
+            dragDropPairs.forEach((pair, index) => {
+                const dropZone = document.createElement('div');
+                dropZone.className = 'drop-zone';
+                dropZone.dataset.location = pair.location;
+                dropZone.dataset.correctProduct = pair.product;
+                dropZone.innerHTML = `<strong>${pair.location}</strong>`;
+                dropZone.addEventListener('dragover', handleDragOver);
+                dropZone.addEventListener('dragleave', handleDragLeave);
+                dropZone.addEventListener('drop', handleDrop);
+                dropZones.appendChild(dropZone);
+            });
+            
+            // Create draggable items (shuffled)
+            const shuffledItems = shuffleArray(dragDropPairs);
+            shuffledItems.forEach(pair => {
+                const dragItem = document.createElement('div');
+                dragItem.className = 'drag-item';
+                dragItem.draggable = true;
+                dragItem.dataset.product = pair.product;
+                dragItem.dataset.location = pair.location;
+                dragItem.innerHTML = `
+                    <img src="${pair.image}" alt="${pair.product}" style="width: 30px; height: 30px; object-fit: cover; border-radius: 4px; margin-right: 8px;">
+                    ${pair.product}
+                `;
+                dragItem.addEventListener('dragstart', handleDragStart);
+                dragItems.appendChild(dragItem);
+            });
+            
+            document.getElementById('drag-drop-score').textContent = 'Matches: 0/10';
+            document.getElementById('match-feedback').style.display = 'none';
+        }
+
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', JSON.stringify({
+                product: e.target.dataset.product,
+                location: e.target.dataset.location
+            }));
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.target.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.target.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.target.classList.remove('drag-over');
+            
+            const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+            const dropZone = e.target;
+            
+            if (data.location === dropZone.dataset.location) {
+                dropZone.innerHTML = `
+                    <strong>${dropZone.dataset.location}</strong><br>
+                    <em>${data.product}</em> ✓
+                `;
+                dropZone.classList.add('correct');
+                dropZone.dataset.droppedProduct = data.product;
+                dragDropMatches++;
+                document.getElementById('drag-drop-score').textContent = `Matches: ${dragDropMatches}/10`;
+                
+                // Remove the dragged item
+                const draggedItem = document.querySelector(`[data-product="${data.product}"]`);
+                if (draggedItem) draggedItem.remove();
+            }
+        }
+
+        function checkMatches() {
+            const percentage = Math.round((dragDropMatches / 10) * 100);
+            let message = `You matched ${dragDropMatches} out of 10 correctly (${percentage}%)`;
+            let discount = 0;
+            
+            if (percentage >= 90) {
+                discount = 0.15;
+                message += '<br>🎉 Outstanding! You earned a 15% location match discount!';
+            } else if (percentage >= 70) {
+                discount = 0.12;
+                message += '<br>🌟 Great job! You earned a 12% location match discount!';
+            } else if (percentage >= 50) {
+                discount = 0.08;
+                message += '<br>👍 Good effort! You earned an 8% location match discount!';
+            } else if (percentage >= 30) {
+                discount = 0.05;
+                message += '<br>📚 Keep trying! You earned a 5% location match discount!';
+            } else {
+                discount = 0.02;
+                message += '<br>🔥 Practice makes perfect! You earned a 2% participation discount!';
+            }
+            
+            const feedbackEl = document.getElementById('match-feedback');
+            feedbackEl.innerHTML = message;
+            feedbackEl.className = 'feedback-message success';
+            feedbackEl.style.display = 'block';
+            
+            gameCompletionStatus.matching.completed = true;
+            gameCompletionStatus.matching.discount = discount;
+            
+            renderCart();
+            
+            setTimeout(() => {
+                closeGamesModal();
+            }, 4000);
+        }
+
+        function resetMatchingGame() {
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.classList.remove('correct');
+                delete zone.dataset.droppedProduct;
+            });
+            setupMatchingGame();
+        }
+
+        function closeGamesModal() {
+            document.getElementById('games-modal').style.display = 'none';
+            document.getElementById('games-selection').style.display = 'block';
+            document.getElementById('sustainability-game').style.display = 'none';
+            document.getElementById('matching-game').style.display = 'none';
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize
+            window.sustainabilityDiscount = 0;
+            updateCartCount();
+            renderCart();
+
+            // Event listeners
+            document.getElementById('checkout-btn').addEventListener('click', processPayment);
+            
+            // Games modal
+            const gamesBtn = document.getElementById('games-btn');
+            const gamesModal = document.getElementById('games-modal');
+            const closeBtn = document.querySelector('.close');
+            
+            gamesBtn.addEventListener('click', () => {
+                gamesModal.style.display = 'block';
+            });
+            
+            closeBtn.addEventListener('click', closeGamesModal);
+            
+            window.addEventListener('click', (e) => {
+                if (e.target === gamesModal) {
+                    closeGamesModal();
+                }
+            });
+            
+            // Game selection
+            document.querySelectorAll('.game-option').forEach(option => {
+                option.addEventListener('click', (e) => {
+                    const game = e.currentTarget.dataset.game;
+                    if (game === 'sustainability') {
+                        startSustainabilityGame();
+                    } else if (game === 'matching') {
+                        startMatchingGame();
+                    }
+                });
+            });
+            
+            // Sustainability game buttons
+            document.getElementById('sustainable-btn').addEventListener('click', () => {
+                checkSustainabilityAnswer(true);
+            });
+            
+            document.getElementById('not-sustainable-btn').addEventListener('click', () => {
+                checkSustainabilityAnswer(false);
+            });
+            
+            // Matching game buttons
+            document.getElementById('check-matches-btn').addEventListener('click', checkMatches);
+            document.getElementById('reset-game-btn').addEventListener('click', resetMatchingGame);
+        });
+    </script>
+</body>
+</html>

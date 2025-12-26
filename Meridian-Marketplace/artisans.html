@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meridian Marketplace - Artisans</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="sticky-header">
+        <nav class="main-nav">
+            <a href="index.html" class="logo">Meridian</a>
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a href="#">Categories <i class="fas fa-chevron-down"></i></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-column">
+                            <h4><i class="fas fa-tshirt"></i> Fashion</h4>
+                            <ul>
+                                <li><a href="products.html?category=men">Men</a></li>
+                                <li><a href="products.html?category=women">Women</a></li>
+                                <li><a href="products.html?category=accessories">Accessories</a></li>
+                            </ul>
+                        </div>
+                        <div class="mega-menu-column">
+                            <h4><i class="fas fa-palette"></i> Handicrafts</h4>
+                            <ul>
+                                <li><a href="products.html?category=pottery">Pottery</a></li>
+                                <li><a href="products.html?category=paintings">Paintings</a></li>
+                                <li><a href="products.html?category=woodwork">Woodwork</a></li>
+                            </ul>
+                        </div>
+                        <div class="mega-menu-column">
+                            <h4><i class="fas fa-utensils"></i> Food & Spices</h4>
+                            <ul>
+                                <li><a href="products.html?category=organic">Organic</a></li>
+                                <li><a href="products.html?category=regional">Regional</a></li>
+                                <li><a href="products.html?category=fusion">Fusion</a></li>
+                            </ul>
+                        </div>
+                        <div class="mega-menu-column">
+                            <h4><i class="fas fa-spa"></i> Wellness</h4>
+                            <ul>
+                                <li><a href="products.html?category=herbal">Herbal</a></li>
+                                <li><a href="products.html?category=yoga">Yoga</a></li>
+                                <li><a href="products.html?category=home-remedies">Home Remedies</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="artisans.html">About Artisans</a></li>
+                <li><a href="impact.html">Impact Dashboard</a></li>
+            </ul>
+            <div class="nav-actions">
+                <form id="search-form" class="search-container">
+        <input type="text" id="search-bar" name="query" placeholder="Search products...">
+    </form>
+                <button class="cart-btn" id="cart-icon" onclick="window.location.href='cart.html'">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count" class="cart-count">0</span>
+                </button>
+            </div>
+            <button class="hamburger-menu" id="hamburger-menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="artisans-page">
+            <h1>Meet Our Artisans</h1>
+            <p>Every product has a story. Get to know the talented makers behind our collection.</p>
+            <div class="artisan-grid" id="artisan-grid">
+                </div>
+        </section>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

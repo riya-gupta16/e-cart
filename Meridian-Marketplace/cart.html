@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meridian Marketplace - Cart</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #6B87C7;
+            --secondary-color: #8FA6D4;
+            --accent-color: #5C77A2;
+            --text-color: #fff;
+            --bg-color: #1a1a1a;
+            --card-bg: #2a2a2a;
+            --success-color: #6A9362;
+            --warning-color: #D4A574;
+            --error-color: #C76B6B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .sticky-header {
+            background-color: var(--card-bg);
+            padding: 1rem 0;
+            border-bottom: 1px solid #444;
+        }
+
+        .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color:  #f0f4f0;
+            text-decoration: none;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .cart-btn {
+            position: relative;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.8rem;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .cart-page {
+            max-width: 900px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .cart-page h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            background-color: var(--card-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #444;
+        }
+
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 1.5rem;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-details h4 {
+            margin: 0 0 0.5rem 0;
+            color: var(--text-color);
+        }
+
+        .cart-item-price {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .eco-points-badge {
+            background: linear-gradient(135deg, var(--success-color), var(--warning-color));
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+
+        /* Sustainability Progress Bar */
+        .sustainability-tracker {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border: 1px solid #444;
+        }
+
+        .sustainability-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .sustainability-title {
+            color: var(--success-color);
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .eco-score {
+            background-color: var(--success-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .progress-container {
+            position: relative;
+            background-color: #333;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), var(--warning-color), var(--primary-color));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .bonus-info {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+
+        /* Enhanced Discount Display */
+        .discount-breakdown {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border: 1px solid var(--success-color);
+        }
+
+        .discount-title {
+            color: var(--success-color);
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .discount-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background-color: var(--bg-color);
+            border-radius: 8px;
+        }
+
+        .discount-label {
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+        .discount-value {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .discount-value.eco {
+            color: var(--success-color);
+        }
+
+        .discount-value.game {
+            color: var(--primary-color);
+        }
+
+        .discount-value.total {
+            color: var(--warning-color);
+            font-size: 1.3rem;
+        }
+
+        .total-section {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid var(--primary-color);
+            margin: 2rem 0;
+        }
+
+        .price-breakdown {
+            margin-bottom: 1rem;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .price-row.original {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .price-row.final {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--success-color);
+            border-top: 1px solid #444;
+            padding-top: 0.5rem;
+        }
+
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .checkout-btn:hover {
+            background-color: var(--accent-color);
+        }
+
+        .payment-message {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            color: var(--success-color);
+            display: none;
+        }
+
+        /* Games Button */
+        .games-section {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .games-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(107, 135, 199, 0.3);
+        }
+
+        .games-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(107, 135, 199, 0.4);
+        }
+
+        .games-status {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+
+        .game-status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.5rem 0;
+        }
+
+        .status-completed {
+            color: var(--success-color);
+        }
+
+        .status-pending {
+            color: var(--secondary-color);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            border: 1px solid #444;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .close:hover {
+            color: var(--error-color);
+        }
+
+        .games-list {
+            display: grid;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .game-option {
+            background-color: var(--bg-color);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 2px solid var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .game-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(107, 135, 199, 0.3);
+        }
+
+        .game-option.completed {
+            border-color: var(--success-color);
+            background-color: rgba(106, 147, 98, 0.1);
+        }
+
+        .game-option.completed h3 {
+            color: var(--success-color);
+        }
+
+        .game-option h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Game Interfaces */
+        .game-interface {
+            display: none;
+            text-align: center;
+        }
+
+        .game-header {
+            margin-bottom: 2rem;
+        }
+
+        .game-header h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Drag & Drop Game */
+        .matching-game {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .locations-column, .products-column {
+            background-color: var(--bg-color);
+            padding: 1rem;
+            border-radius: 10px;
+            min-height: 400px;
+        }
+
+        .column-title {
+            color: var(--secondary-color);
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .draggable-item {
+            background-color: var(--card-bg);
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            cursor: grab;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .draggable-item:hover {
+            border-color: var(--primary-color);
+            transform: scale(1.02);
+        }
+
+        .draggable-item.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .drop-zone {
+            background-color: var(--card-bg);
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            border: 2px dashed #444;
+            min-height: 50px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .drop-zone.dragover {
+            border-color: var(--primary-color);
+            background-color: rgba(107, 135, 199, 0.1);
+        }
+
+        .drop-zone.matched {
+            border-color: var(--success-color);
+            background-color: rgba(106, 147, 98, 0.2);
+        }
+
+        .game-controls {
+            margin-top: 2rem;
+        }
+
+        .game-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .game-btn:hover {
+            background-color: var(--accent-color);
+        }
+
+        .game-btn:disabled {
+            background-color: #666;
+            cursor: not-allowed;
+        }
+
+        .feedback-message {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .feedback-message.success {
+            background-color: rgba(106, 147, 98, 0.2);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .feedback-message.error {
+            background-color: rgba(199, 107, 107, 0.2);
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .matching-game {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 2% auto;
+                padding: 1rem;
+            }
+            
+            .cart-page {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="sticky-header">
+        <nav class="main-nav">
+            <a href="index.html" class="logo">Meridian</a>
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a href="#">Categories <i class="fas fa-chevron-down"></i></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-column">
+                            <h4><i class="fas fa-tshirt"></i> Fashion</h4>
+                            <ul>
+                                <li><a href="products.html?category=men">Men</a></li>
+                                <li><a href="products.html?category=women">Women</a></li>
+                                <li><a href="products.html?category=accessories">Accessories</a></li>
+                            </ul>
+                        </div>
+                        <div class="mega-menu-column">
+                            <h4><i class="fas fa-palette"></i> Handicrafts</h4>
+                            <ul>
+                                <li><a href="products.html?category=pottery">Pottery</a></li>
+                                <li><a href="products.html?category=paintings">Paintings</a></li>
+                                <li><a href="products.html?category=woodwork">Woodwork</a></li>
+                            </ul>
+                        </div>
+                        <div class="mega-menu-column">
+                            <h4><i class="fas fa-utensils"></i> Food & Spices</h4>
+                            <ul>
+                                <li><a href="products.html?category=organic">Organic</a></li>
+                                <li><a href="products.html?category=regional">Regional</a></li>
+                                <li><a href="products.html?category=fusion">Fusion</a></li>
+                            </ul>
+                        </div>
+                        <div class="mega-menu-column">
+                            <h4><i class="fas fa-spa"></i> Wellness</h4>
+                            <ul>
+                                <li><a href="products.html?category=herbal">Herbal</a></li>
+                                <li><a href="products.html?category=yoga">Yoga</a></li>
+                                <li><a href="products.html?category=home-remedies">Home Remedies</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="artisans.html">About Artisans</a></li>
+                <li><a href="impact.html">Impact Dashboard</a></li>
+            </ul>
+            <div class="nav-actions">
+                <form id="search-form" class="search-container">
+                    <input type="text" id="search-bar" name="query" placeholder="Search products...">
+                </form>
+                <button class="cart-btn" id="cart-icon" onclick="window.location.href='cart.html'">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count" class="cart-count">0</span>
+                </button>
+            </div>
+            <button class="hamburger-menu" id="hamburger-menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <main class="cart-page">
+        <h1>Your Shopping Cart</h1>
+        
+        <div id="cart-items" class="cart-items-container">
+        </div>
+        
+        <!-- Sustainability Progress Bar -->
+        <div id="sustainability-tracker" class="sustainability-tracker" style="display: none;">
+            <div class="sustainability-header">
+                <div class="sustainability-title">
+                    <i class="fas fa-leaf"></i> Eco-Friendly Progress
+                </div>
+                <div class="eco-score" id="eco-score">0 Points</div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+            </div>
+            <div class="bonus-info" id="bonus-info">
+                Add more eco-friendly materials to unlock green bonuses!
+            </div>
+        </div>
+
+        <!-- Enhanced Discount Display -->
+        <div id="discount-breakdown" class="discount-breakdown" style="display: none;">
+            <div class="discount-title">💰 Your Discounts & Savings</div>
+            
+            <div class="discount-item">
+                <span class="discount-label">🌱 Eco-Friendly Materials Discount:</span>
+                <span class="discount-value eco" id="eco-discount">0%</span>
+            </div>
+            
+            <div class="discount-item">
+                <span class="discount-label">🎮 Total Game Discounts:</span>
+                <span class="discount-value game" id="game-discount">0%</span>
+            </div>
+            
+            <div class="discount-item" style="border-top: 1px solid #444; margin-top: 1rem; padding-top: 1rem;">
+                <span class="discount-label"><strong>🎉 Applied Discount (Maximum):</strong></span>
+                <span class="discount-value total" id="total-discount">0%</span>
+            </div>
+            
+            <div class="discount-item">
+                <span class="discount-label"><strong>💵 Total Savings:</strong></span>
+                <span class="discount-value total" id="total-savings">$0.00</span>
+            </div>
+        </div>
+
+        <!-- Total Section -->
+        <div class="total-section">
+            <div class="price-breakdown">
+                <div class="price-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">$0.00</span>
+                </div>
+                <div class="price-row original" id="original-total-row" style="display: none;">
+                    <span>Original Total:</span>
+                    <span id="original-total">$0.00</span>
+                </div>
+                <div class="price-row final">
+                    <span>Final Total:</span>
+                    <span id="final-total">$0.00</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Games Section -->
+        <div class="games-section">
+            <button id="games-btn" class="games-btn">
+                <i class="fas fa-gamepad"></i> Play Games & Challenges for Offers!
+            </button>
+            <div id="games-status" class="games-status" style="display: none;">
+                <div class="game-status-item">
+                    <span>🧠 Sustainability Quiz:</span>
+                    <span id="quiz-status" class="status-pending">Not completed</span>
+                </div>
+                <div class="game-status-item">
+                    <span>🧩 Location Match:</span>
+                    <span id="match-status" class="status-pending">Not completed</span>
+                </div>
+                <div class="game-status-item">
+                    <span><strong>🎮 Total Game Discount:</strong></span>
+                    <span id="total-game-discount"><strong>0%</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <button id="checkout-btn" class="checkout-btn" style="display: none;">Proceed to Payment</button>
+        <p id="payment-message" class="payment-message"></p>
+    </main>
+
+    <!-- Games Modal -->
+    <div id="games-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            
+            <!-- Games Selection -->
+            <div id="games-selection">
+                <h2>Choose Your Challenge</h2>
+                <div class="games-list">
+                    <div class="game-option" id="sustainability-option" data-game="sustainability">
+                        <h3><i class="fas fa-leaf"></i> Sustainability Quiz</h3>
+                        <p>Test your knowledge about eco-friendly products</p>
+                        <small>Complete to unlock green bonuses!</small>
+                    </div>
+                    <div class="game-option" id="matching-option" data-game="matching">
+                        <h3><i class="fas fa-puzzle-piece"></i> Location Match</h3>
+                        <p>Match locations with their famous products</p>
+                        <small>Earn up to 15% discount!</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sustainability Game -->
+            <div id="sustainability-game" class="game-interface">
+                <div class="game-header">
+                    <h2>Sustainability Challenge</h2>
+                    <div class="game-stats">
+                        <span id="sus-score">Score: 0</span>
+                        <span id="sus-progress">1 of 5</span>
+                    </div>
+                </div>
+                <div id="product-display" class="product-card"></div>
+                <div id="sus-feedback" class="feedback-message" style="display: none;"></div>
+                <div class="game-controls">
+                    <button id="sustainable-btn" class="game-btn">Sustainable</button>
+                    <button id="not-sustainable-btn" class="game-btn">Not Sustainable</button>
+                </div>
+            </div>
+
+            <!-- Matching Game -->
+            <div id="matching-game" class="game-interface">
+                <div class="game-header">
+                    <h2>Match Locations with Products</h2>
+                    <p>Drag products to their matching locations</p>
+                </div>
+                <div class="matching-game">
+                    <div class="locations-column">
+                        <div class="column-title">Locations</div>
+                        <div id="locations-container"></div>
+                    </div>
+                    <div class="products-column">
+                        <div class="column-title">Famous Products</div>
+                        <div id="products-container"></div>
+                    </div>
+                </div>
+                <div id="match-feedback" class="feedback-message" style="display: none;"></div>
+                <div class="game-controls">
+                    <button id="check-matches-btn" class="game-btn">Check Matches</button>
+                    <button id="reset-game-btn" class="game-btn">Reset Game</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Updated product data with the 5 specified materials
+        const products = [
+            { id: 1, name: "Handwoven Jute Shopping Bag", price: 25, artisan: "Maya Singh", category: "accessories", region: "india", material: "jute", gender: "unisex", image: "assets\images\product22.webp" },
+            { id: 2, name: "Organic Cotton Yoga Mat", price: 89, artisan: "Priya Sharma", category: "yoga", region: "india", material: "cotton", gender: "unisex", image: "assets\images\product2.webp" },
+            { id: 3, name: "Handcrafted Wooden Bowl Set", price: 65, artisan: "Carlos Rodriguez", category: "woodwork", region: "colombia", material: "wood", gender: "unisex", image: "assets\images\product23.webp" },
+            { id: 4, name: "Herbal Tea Blend", price: 28, artisan: "Elena Popović", category: "herbal", region: "bosnia", material: "herbs", gender: "unisex", image: "assets\images\product24.webp"},
+            { id: 5, name: "Clay Pottery Vase", price: 45, artisan: "Sarah Thompson", category: "pottery", region: "canada", material: "clay", gender: "unisex", image: "assets\images\product2.webp" },
+            { id: 6, name: "Premium Jute Table Runner", price: 35, artisan: "Tenzin Norbu", category: "accessories", region: "nepal", material: "jute", gender: "unisex", image: "assets\images\product25.webp" },
+            { id: 7, name: "Organic Cotton Throw Pillow", price: 42, artisan: "Lisa Chen", category: "home", region: "taiwan", material: "cotton", gender: "unisex", image: "assets\images\product21.webp" },
+            { id: 8, name: "Carved Wooden Sculpture", price: 120, artisan: "Ahmed Hassan", category: "art", region: "morocco", material: "wood", gender: "unisex", image: "assets\images\product26.webp" },
+        ];
+
+        // Material eco-points scoring system
+        const materialEcoPoints = {
+            "jute": 25,      // Highest eco-friendly score
+            "cotton": 20,    // High (organic cotton)
+            "wood": 18,      // Good (sustainable forestry)
+            "herbs": 22,     // Very high (natural/organic)
+            "clay": 15       // Moderate (natural but energy-intensive firing)
+        };
+
+        // Location-Product matches for drag & drop game
+        const locationMatches = [
+            { location: "Varanasi, India", product: "Banarasi Saree" },
+            { location: "Kashmir, India", product: "Pashmina Shawl" },
+            { location: "Jaipur, India", product: "Blue Pottery" },
+            { location: "Kerala, India", product: "Spice Blends" },
+            { location: "Tibet", product: "Prayer Flags" },
+            { location: "Morocco", product: "Argan Oil" },
+            { location: "Peru", product: "Alpaca Wool" },
+            { location: "Mexico", product: "Talavera Pottery" },
+            { location: "Japan", product: "Ceramic Tea Sets" },
+            { location: "Turkey", product: "Kilim Rugs" }
+        ];
+
+        // Game completion tracking
+        let gameCompletionStatus = {
+            sustainability: { completed: false, discount: 0 },
+            matching: { completed: false, discount: 0 }
+        };
+
+        function getCartItems() {
+    try {
+        // First try to get full cart data (from global script)
+        const cartData = localStorage.getItem('cartItems');
+        if (cartData) {
+            const items = JSON.parse(cartData);
+            // If items have full product data, return them
+            if (items.length > 0 && items[0].name) {
+                return items;
+            }
+        }
+        
+        // Fallback: try to get cart IDs and map to products
+        const cartIds = localStorage.getItem('cartItemIds');
+        if (cartIds) {
+            const ids = JSON.parse(cartIds);
+            return ids.map(id => products.find(p => p.id === id)).filter(Boolean);
+        }
+    } catch (e) {
+        console.log('localStorage not available, using memory storage');
+    }
+    
+    // Memory fallback with sample items for demo
+    if (!window.cartData) {
+        window.cartData = [];
+        // Sample items for demo (remove this block if you want empty cart)
+        if (window.cartData.length === 0) {
+            window.cartData = [
+                products.find(p => p.id === 1),
+                products.find(p => p.id === 2),
+                products.find(p => p.id === 4),
+                products.find(p => p.id === 5)
+            ].filter(Boolean);
+        }
+    }
+    return window.cartData;
+}
+
+        function saveCartItems(items) {
+    window.cartData = items;
+    
+    // Save in both formats to match global script
+    try {
+        localStorage.setItem('cartItems', JSON.stringify(items));
+        const cartIds = items.map(item => item.id);
+        localStorage.setItem('cartItemIds', JSON.stringify(cartIds));
+    } catch (e) {
+        console.log('localStorage not available for saving');
+    }
+}
+
+        function updateCartCount() {
+            const cartItems = getCartItems();
+            document.getElementById('cart-count').textContent = cartItems.length;
+        }
+
+        function addToCart(productId) {
+            const cartItems = getCartItems();
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                cartItems.push(product);
+                saveCartItems(cartItems);
+                updateCartCount();
+                renderCart();
+            }
+        }
+
+        function removeFromCart(productId) {
+            const cartItems = getCartItems();
+            const updatedItems = cartItems.filter(item => item.id !== productId);
+            saveCartItems(updatedItems);
+            updateCartCount();
+            renderCart();
+        }
+
+        // Enhanced eco-friendly scoring based on material points
+        function calculateEcoPoints(cartItems) {
+            if (cartItems.length === 0) return { totalPoints: 0, maxPossible: 0, score: 0 };
+            
+            let totalPoints = 0;
+            let maxPossible = 0;
+            
+            cartItems.forEach(item => {
+                const points = materialEcoPoints[item.material] || 0;
+                totalPoints += points;
+                maxPossible += 25; // Maximum possible points per item
+            });
+            
+            const score = Math.min(100, Math.round((totalPoints / maxPossible) * 100));
+            
+            return { totalPoints, maxPossible, score };
+        }
+
+        function getEcoDiscount(ecoScore) {
+            if (ecoScore >= 90) return 0.25;      // 25% for 90%+ eco score
+            if (ecoScore >= 75) return 0.20;      // 20% for 75%+ eco score
+            if (ecoScore >= 60) return 0.15;      // 15% for 60%+ eco score
+            if (ecoScore >= 40) return 0.10;      // 10% for 40%+ eco score
+            if (ecoScore >= 20) return 0.05;      // 5% for 20%+ eco score
+            return 0;
+        }
+
+        function updateSustainabilityTracker() {
+            const cartItems = getCartItems();
+            const tracker = document.getElementById('sustainability-tracker');
+            
+            if (cartItems.length === 0) {
+                tracker.style.display = 'none';
+                return;
+            }
+
+            tracker.style.display = 'block';
+            const ecoData = calculateEcoPoints(cartItems);
+            const discount = getEcoDiscount(ecoData.score);
+            
+            document.getElementById('eco-score').textContent = `${ecoData.totalPoints} Points`;
+            document.getElementById('progress-fill').style.width = `${ecoData.score}%`;
+            
+            let bonusMessage = '';
+            
+            if (ecoData.score >= 90) {
+                bonusMessage = '🌟 Outstanding! You\'ve unlocked 25% Eco Discount!';
+            } else if (ecoData.score >= 75) {
+                bonusMessage = '🌱 Excellent! You\'ve unlocked 20% Eco Discount!';
+            } else if (ecoData.score >= 60) {
+                bonusMessage = '👍 Great job! You\'ve unlocked 15% Eco Discount!';
+            } else if (ecoData.score >= 40) {
+                bonusMessage = '🌿 Good progress! You\'ve unlocked 10% Eco Discount!';
+            } else if (ecoData.score >= 20) {
+                bonusMessage = '🌾 Nice start! You\'ve unlocked 5% Eco Discount!';
+            } else {
+                const pointsNeeded = Math.ceil((20 * ecoData.maxPossible / 100) - ecoData.totalPoints);
+                bonusMessage = `Add ${pointsNeeded} more eco-points for discounts! Try Jute (25pts) or Herbs (22pts).`;
+            }
+            
+            document.getElementById('bonus-info').innerHTML = bonusMessage;
+            
+            // Store eco discount
+            window.ecoDiscount = discount;
+        }
+
+        function getTotalGameDiscount() {
+            return gameCompletionStatus.sustainability.discount + gameCompletionStatus.matching.discount;
+        }
+
+        function updateGameStatus() {
+            const gamesStatus = document.getElementById('games-status');
+            const quizStatus = document.getElementById('quiz-status');
+            const matchStatus = document.getElementById('match-status');
+            const totalGameDiscount = document.getElementById('total-game-discount');
+            
+            // Show game status if any game has been completed
+            if (gameCompletionStatus.sustainability.completed || gameCompletionStatus.matching.completed) {
+                gamesStatus.style.display = 'block';
+            }
+            
+            // Update individual game statuses
+            if (gameCompletionStatus.sustainability.completed) {
+                quizStatus.textContent = `Completed (${Math.round(gameCompletionStatus.sustainability.discount * 100)}% discount)`;
+                quizStatus.className = 'status-completed';
+                document.getElementById('sustainability-option').classList.add('completed');
+            } else {
+                quizStatus.textContent = 'Not completed';
+                quizStatus.className = 'status-pending';
+            }
+            
+            if (gameCompletionStatus.matching.completed) {
+                matchStatus.textContent = `Completed (${Math.round(gameCompletionStatus.matching.discount * 100)}% discount)`;
+                matchStatus.className = 'status-completed';
+                document.getElementById('matching-option').classList.add('completed');
+            } else {
+                matchStatus.textContent = 'Not completed';
+                matchStatus.className = 'status-pending';
+            }
+            
+            // Update total game discount
+            const totalDiscount = getTotalGameDiscount();
+            totalGameDiscount.innerHTML = `<strong>${Math.round(totalDiscount * 100)}%</strong>`;
+        }
+
+        function updateDiscountDisplay() {
+            const ecoDiscount = window.ecoDiscount || 0;
+            const totalGameDiscount = getTotalGameDiscount();
+            const maxDiscount = Math.max(ecoDiscount, totalGameDiscount); // Take maximum rule
+            
+            const discountBreakdown = document.getElementById('discount-breakdown');
+            
+            if (ecoDiscount > 0 || totalGameDiscount > 0) {
+                discountBreakdown.style.display = 'block';
+                
+                document.getElementById('eco-discount').textContent = `${Math.round(ecoDiscount * 100)}%`;
+                document.getElementById('game-discount').textContent = `${Math.round(totalGameDiscount * 100)}%`;
+                document.getElementById('total-discount').textContent = `${Math.round(maxDiscount * 100)}%`;
+                
+                const cartItems = getCartItems();
+                const originalTotal = cartItems.reduce((sum, item) => sum + item.price, 0);
+                const totalSavings = originalTotal * maxDiscount;
+                
+                document.getElementById('total-savings').textContent = `${totalSavings.toFixed(2)}`;
+            } else {
+                discountBreakdown.style.display = 'none';
+            }
+            
+            return maxDiscount;
+        }
+
+        function renderCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            
+            const cartItems = getCartItems();
+            let originalTotal = 0;
+            
+            cartItemsContainer.innerHTML = '';
+            
+            if (cartItems.length === 0) {
+                cartItemsContainer.innerHTML = '<p style="text-align:center;">Your cart is empty. Start shopping!</p>';
+                checkoutBtn.style.display = 'none';
+                document.getElementById('sustainability-tracker').style.display = 'none';
+                document.getElementById('discount-breakdown').style.display = 'none';
+                updateTotalDisplay(0, 0, 0);
+                return;
+            }
+
+            // Render cart items with eco points
+            cartItems.forEach(item => {
+                const ecoPoints = materialEcoPoints[item.material] || 0;
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+                    <div class="cart-item-details">
+                        <h4>${item.name}${ecoPoints > 0 ? `<span class="eco-points-badge">${ecoPoints} eco-points</span>` : ''}</h4>
+                        <p class="cart-item-price">${item.price.toFixed(2)}</p>
+                        <small>by ${item.artisan} • Material: ${item.material}</small>
+                    </div>
+                    <button class="remove-btn" onclick="removeFromCart(${item.id})" style="
+                        background: var(--error-color);
+                        color: white;
+                        border: none;
+                        padding: 0.5rem 1rem;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        margin-left: auto;
+                    ">Remove</button>
+                `;
+                cartItemsContainer.appendChild(itemDiv);
+                originalTotal += item.price;
+            });
+
+            checkoutBtn.style.display = 'block';
+
+            // Calculate and display discounts
+            updateSustainabilityTracker();
+            updateGameStatus();
+            const maxDiscount = updateDiscountDisplay();
+            
+            const discountAmount = originalTotal * maxDiscount;
+            const finalTotal = originalTotal - discountAmount;
+            
+            updateTotalDisplay(originalTotal, discountAmount, finalTotal);
+        }
+
+        function updateTotalDisplay(originalTotal, discountAmount, finalTotal) {
+            document.getElementById('subtotal').textContent = `${originalTotal.toFixed(2)}`;
+            
+            if (discountAmount > 0) {
+                document.getElementById('original-total-row').style.display = 'flex';
+                document.getElementById('original-total').textContent = `${originalTotal.toFixed(2)}`;
+                document.getElementById('final-total').textContent = `${finalTotal.toFixed(2)}`;
+            } else {
+                document.getElementById('original-total-row').style.display = 'none';
+                document.getElementById('final-total').textContent = `${originalTotal.toFixed(2)}`;
+            }
+        }
+
+        function processPayment() {
+    // Clear cart and reset game status
+    window.cartData = [];
+    gameCompletionStatus = {
+        sustainability: { completed: false, discount: 0 },
+        matching: { completed: false, discount: 0 }
+    };
+    window.ecoDiscount = 0;
+    
+    // Clear both localStorage keys
+    try {
+        localStorage.removeItem('cartItems');
+        localStorage.removeItem('cartItemIds');
+        localStorage.removeItem('discountApplied');
+    } catch (e) {
+        console.log('localStorage not available');
+    }
+    
+    // Hide game status section after payment
+    document.getElementById('games-status').style.display = 'none';
+    
+    // Reset game option styling
+    document.getElementById('sustainability-option').classList.remove('completed');
+    document.getElementById('matching-option').classList.remove('completed');
+    
+    renderCart();
+    updateCartCount();
+    
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const paymentMessage = document.getElementById('payment-message');
+    
+    checkoutBtn.style.display = 'none';
+    paymentMessage.textContent = 'Payment Successful! Thank you for your purchase.';
+    paymentMessage.style.display = 'block';
+    
+    setTimeout(() => {
+        paymentMessage.style.display = 'none';
+    }, 5000);
+}
+
+        // Game functionality
+        let currentGame = null;
+        let sustainabilityGameData = {
+            currentIndex: 0,
+            score: 0,
+            totalQuestions: 5
+        };
+
+        function startSustainabilityGame() {
+            if (gameCompletionStatus.sustainability.completed) {
+                alert('You have already completed the Sustainability Quiz!');
+                return;
+            }
+            
+            currentGame = 'sustainability';
+            sustainabilityGameData.currentIndex = 0;
+            sustainabilityGameData.score = 0;
+            
+            document.getElementById('games-selection').style.display = 'none';
+            document.getElementById('sustainability-game').style.display = 'block';
+            
+            showNextQuestion();
+        }
+
+        function showNextQuestion() {
+            if (sustainabilityGameData.currentIndex >= sustainabilityGameData.totalQuestions) {
+                endSustainabilityGame();
+                return;
+            }
+
+            const product = products[sustainabilityGameData.currentIndex];
+            const ecoPoints = materialEcoPoints[product.material] || 0;
+            
+            document.getElementById('product-display').innerHTML = `
+                <img src="${product.image}" alt="${product.name}" style="max-width: 200px; border-radius: 8px; margin-bottom: 1rem;">
+                <h3>${product.name}</h3>
+                <p>by ${product.artisan}</p>
+                <small>Material: ${product.material} | Region: ${product.region}</small>
+                <br><small>Eco Points: ${ecoPoints}</small>
+            `;
+
+            document.getElementById('sus-score').textContent = `Score: ${sustainabilityGameData.score}`;
+            document.getElementById('sus-progress').textContent = `${sustainabilityGameData.currentIndex + 1} of ${sustainabilityGameData.totalQuestions}`;
+            
+            document.getElementById('sus-feedback').style.display = 'none';
+            document.getElementById('sustainable-btn').style.display = 'inline-block';
+            document.getElementById('not-sustainable-btn').style.display = 'inline-block';
+        }
+
+        function checkSustainabilityAnswer(isSustainable) {
+            const product = products[sustainabilityGameData.currentIndex];
+            const ecoPoints = materialEcoPoints[product.material] || 0;
+            const isActuallySustainable = ecoPoints >= 18; // Consider 18+ points as sustainable
+            
+            const feedbackEl = document.getElementById('sus-feedback');
+            
+            if (isSustainable === isActuallySustainable) {
+                sustainabilityGameData.score++;
+                feedbackEl.textContent = `Correct! ${product.material} has ${ecoPoints} eco-points.`;
+                feedbackEl.className = 'feedback-message success';
+            } else {
+                feedbackEl.textContent = `Incorrect. ${product.material} has ${ecoPoints} eco-points (${ecoPoints >= 18 ? 'sustainable' : 'less sustainable'}).`;
+                feedbackEl.className = 'feedback-message error';
+            }
+            
+            feedbackEl.style.display = 'block';
+            sustainabilityGameData.currentIndex++;
+            
+            setTimeout(() => {
+                showNextQuestion();
+            }, 2000);
+        }
+
+        function endSustainabilityGame() {
+            const score = sustainabilityGameData.score;
+            const total = sustainabilityGameData.totalQuestions;
+            const percentage = (score / total) * 100;
+            
+            let message = `Game Complete! You scored ${score} out of ${total} (${Math.round(percentage)}%)`;
+            let discount = 0;
+            
+            if (percentage >= 80) {
+                discount = 0.20;
+                message += '<br>🎉 Excellent! You earned a 20% sustainability quiz discount!';
+            } else if (percentage >= 60) {
+                discount = 0.15;
+                message += '<br>🌟 Good job! You earned a 15% sustainability quiz discount!';
+            } else if (percentage >= 40) {
+                discount = 0.10;
+                message += '<br>👍 Keep learning! You earned a 10% sustainability quiz discount!';
+            } else {
+                discount = 0.05;
+                message += '<br>📚 Try harder next time! You earned a 5% sustainability quiz discount!';
+            }
+            
+            document.getElementById('product-display').innerHTML = `<h3>${message}</h3>`;
+            document.getElementById('sustainable-btn').style.display = 'none';
+            document.getElementById('not-sustainable-btn').style.display = 'none';
+            
+            // Mark game as completed and store discount
+            gameCompletionStatus.sustainability.completed = true;
+            gameCompletionStatus.sustainability.discount = discount;
+            
+            renderCart();
+            
+            setTimeout(() => {
+                closeGamesModal();
+            }, 3000);
+        }
+
+        function startMatchingGame() {
+            if (gameCompletionStatus.matching.completed) {
+                alert('You have already completed the Location Match game!');
+                return;
+            }
+            
+            currentGame = 'matching';
+            document.getElementById('games-selection').style.display = 'none';
+            document.getElementById('matching-game').style.display = 'block';
+            
+            setupMatchingGame();
+        }
+
+        function setupMatchingGame() {
+            const locationsContainer = document.getElementById('locations-container');
+            const productsContainer = document.getElementById('products-container');
+            
+            // Shuffle the matches
+            const shuffledMatches = [...locationMatches].sort(() => Math.random() - 0.5);
+            const gameMatches = shuffledMatches.slice(0, 6);
+            
+            // Clear containers
+            locationsContainer.innerHTML = '';
+            productsContainer.innerHTML = '';
+            
+            // Create location drop zones
+            gameMatches.forEach((match, index) => {
+                const locationDiv = document.createElement('div');
+                locationDiv.className = 'drop-zone';
+                locationDiv.dataset.location = match.location;
+                locationDiv.dataset.correctProduct = match.product;
+                locationDiv.innerHTML = `<strong>${match.location}</strong>`;
+                locationsContainer.appendChild(locationDiv);
+            });
+            
+            // Create draggable products (shuffled)
+            const shuffledProducts = [...gameMatches.map(m => m.product)].sort(() => Math.random() - 0.5);
+            shuffledProducts.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'draggable-item';
+                productDiv.draggable = true;
+                productDiv.textContent = product;
+                productDiv.dataset.product = product;
+                productsContainer.appendChild(productDiv);
+            });
+            
+            // Store game data for checking
+            window.currentMatches = gameMatches;
+            
+            // Add drag and drop event listeners
+            addDragDropListeners();
+            
+            // Clear previous feedback
+            document.getElementById('match-feedback').style.display = 'none';
+        }
+
+        function addDragDropListeners() {
+            const draggableItems = document.querySelectorAll('.draggable-item');
+            const dropZones = document.querySelectorAll('.drop-zone');
+            
+            draggableItems.forEach(item => {
+                item.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', e.target.dataset.product);
+                    e.target.classList.add('dragging');
+                });
+                
+                item.addEventListener('dragend', (e) => {
+                    e.target.classList.remove('dragging');
+                });
+            });
+            
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    zone.classList.add('dragover');
+                });
+                
+                zone.addEventListener('dragleave', (e) => {
+                    zone.classList.remove('dragover');
+                });
+                
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('dragover');
+                    
+                    const product = e.dataTransfer.getData('text/plain');
+                    const draggableItem = document.querySelector(`[data-product="${product}"]`);
+                    
+                    // Clear any existing content except the location name
+                    const locationName = zone.querySelector('strong').textContent;
+                    zone.innerHTML = `<strong>${locationName}</strong><br><em>${product}</em>`;
+                    zone.dataset.droppedProduct = product;
+                    
+                    // Remove the draggable item
+                    if (draggableItem) {
+                        draggableItem.remove();
+                    }
+                });
+            });
+        }
+
+        function checkMatches() {
+            const dropZones = document.querySelectorAll('.drop-zone');
+            let correctMatches = 0;
+            let totalPossibleMatches = window.currentMatches.length;
+            
+            dropZones.forEach(zone => {
+                if (zone.dataset.droppedProduct) {
+                    if (zone.dataset.droppedProduct === zone.dataset.correctProduct) {
+                        correctMatches++;
+                        zone.classList.add('matched');
+                    }
+                }
+            });
+            
+            const feedbackEl = document.getElementById('match-feedback');
+            const percentage = (correctMatches / totalPossibleMatches) * 100;
+            
+            let message = `You matched ${correctMatches} out of ${totalPossibleMatches} correctly (${Math.round(percentage)}%)`;
+            let discount = 0;
+            
+            if (percentage >= 90) {
+                discount = 0.15;
+                message += '<br>🎉 Outstanding! You earned a 15% location match discount!';
+                feedbackEl.className = 'feedback-message success';
+            } else if (percentage >= 70) {
+                discount = 0.12;
+                message += '<br>🌟 Great job! You earned a 12% location match discount!';
+                feedbackEl.className = 'feedback-message success';
+            } else if (percentage >= 50) {
+                discount = 0.08;
+                message += '<br>👍 Good effort! You earned a 8% location match discount!';
+                feedbackEl.className = 'feedback-message success';
+            } else if (percentage >= 30) {
+                discount = 0.05;
+                message += '<br>📚 Keep trying! You earned a 5% location match discount!';
+                feedbackEl.className = 'feedback-message success';
+            } else {
+                discount = 0.02;
+                message += '<br>🔄 Practice makes perfect! You earned a 2% location match discount!';
+                feedbackEl.className = 'feedback-message error';
+            }
+            
+            feedbackEl.innerHTML = message;
+            feedbackEl.style.display = 'block';
+            
+            // Mark game as completed and store discount
+            gameCompletionStatus.matching.completed = true;
+            gameCompletionStatus.matching.discount = discount;
+            
+            renderCart();
+            
+            setTimeout(() => {
+                closeGamesModal();
+            }, 4000);
+        }
+
+        function resetMatchingGame() {
+            // Clear matched status
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.classList.remove('matched');
+            });
+            setupMatchingGame();
+        }
+
+        function closeGamesModal() {
+            document.getElementById('games-modal').style.display = 'none';
+            document.getElementById('games-selection').style.display = 'block';
+            document.getElementById('sustainability-game').style.display = 'none';
+            document.getElementById('matching-game').style.display = 'none';
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize cart data with sample products
+            
+            window.ecoDiscount = 0;
+            
+            updateCartCount();
+            renderCart();
+
+            // Event listeners
+            document.getElementById('checkout-btn').addEventListener('click', processPayment);
+            
+            // Games modal
+            const gamesBtn = document.getElementById('games-btn');
+            const gamesModal = document.getElementById('games-modal');
+            const closeBtn = document.querySelector('.close');
+            
+            gamesBtn.addEventListener('click', () => {
+                gamesModal.style.display = 'block';
+            });
+            
+            closeBtn.addEventListener('click', closeGamesModal);
+            
+            window.addEventListener('click', (e) => {
+                if (e.target === gamesModal) {
+                    closeGamesModal();
+                }
+            });
+            
+            // Game selection
+            document.querySelectorAll('.game-option').forEach(option => {
+                option.addEventListener('click', (e) => {
+                    const game = e.currentTarget.dataset.game;
+                    if (game === 'sustainability') {
+                        startSustainabilityGame();
+                    } else if (game === 'matching') {
+                        startMatchingGame();
+                    }
+                });
+            });
+            
+            // Sustainability game buttons
+            document.getElementById('sustainable-btn').addEventListener('click', () => {
+                checkSustainabilityAnswer(true);
+            });
+            
+            document.getElementById('not-sustainable-btn').addEventListener('click', () => {
+                checkSustainabilityAnswer(false);
+            });
+            
+            // Matching game buttons
+            document.getElementById('check-matches-btn').addEventListener('click', checkMatches);
+            document.getElementById('reset-game-btn').addEventListener('click', resetMatchingGame);
+        });
+    </script>
+</body>
+</html>

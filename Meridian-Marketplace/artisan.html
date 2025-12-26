@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Artisan Profile | Meridian</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="sticky-header">
+    <nav class="main-nav">
+        <a href="index.html" class="logo">Meridian</a>
+        <ul class="nav-links">
+            <li><a href="products.html">Products</a></li>
+            <li><a href="artisans.html">Artisans</a></li>
+            <li><a href="impact.html">Impact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main style="padding: 3rem; max-width: 900px; margin: auto;">
+    <div id="artisan-profile" class="artisan-profile-card">
+        <!-- Artisan data injected here -->
+    </div>
+</main>
+
+<script src="js/data.js"></script>
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const artisanId = parseInt(params.get("id"));
+
+    const artisan = artisans.find(a => a.id === artisanId);
+
+    const container = document.getElementById("artisan-profile");
+
+    if (!artisan) {
+        container.innerHTML = "<h2>Artisan not found</h2>";
+    } else {
+        container.innerHTML = `
+            <img src="${artisan.image}" 
+                 alt="${artisan.name}" 
+                 style="width:200px;border-radius:50%;margin-bottom:1rem;">
+            <h2>${artisan.name}</h2>
+            <p><strong>Location:</strong> ${artisan.location}</p>
+            <p><strong>Speciality:</strong> ${artisan.badge}</p>
+            <p>${artisan.bio}</p>
+
+            <h3>Contact</h3>
+            <p>Email: info@meridian.com</p>
+            <p>Custom orders available</p>
+        `;
+    }
+</script>
+
+</body>
+</html>

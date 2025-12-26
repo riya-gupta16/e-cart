@@ -1,0 +1,1251 @@
+/* Variables for an earthy, dark theme */
+:root {
+    --primary-color: #6A9362;
+    --secondary-color: #B87B5B;
+    --dark-bg: #1A1A1A;
+    --light-text: #E0E0E0;
+    --card-bg: #2C2C2C;
+    --shadow-color: rgba(0, 0, 0, 0.4);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--dark-bg);
+    color: var(--light-text);
+    line-height: 1.6;
+}
+
+/* --- Sticky Header & Navigation --- */
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    background-color: rgba(26, 26, 26, 0.9);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 6px var(--shadow-color);
+    padding: 0.75rem 2rem;
+    transition: background-color 0.3s ease;
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    max-width: 1200px;
+    margin: 0 auto;
+
+    gap: 2rem;
+    flex-wrap: nowrap; /* 🔴 IMPORTANT */
+}
+
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #C9D7FF;
+    text-decoration: none;
+}
+.nav-links {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    gap: 1.5rem;
+    white-space: nowrap; /* 🔴 prevents line break */
+}
+
+
+.nav-links li {
+    margin: 0 1rem;
+    position: relative;
+}
+
+.nav-links a {
+    color: var(--light-text);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
+.dropdown:hover .mega-menu {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.mega-menu {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    display: flex;
+    gap: 2rem;
+    background-color: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 8px 30px var(--shadow-color);
+    padding: 2rem;
+    min-width: 600px;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.mega-menu-column h4 {
+    color: var(--primary-color);
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+}
+
+.mega-menu-column ul {
+    list-style: none;
+}
+
+.mega-menu-column li {
+    margin: 0.5rem 0;
+}
+
+.mega-menu-column a {
+    padding: 0.25rem 0;
+    display: block;
+    color: var(--light-text);
+}
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+
+.search-container input {
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    color: var(--light-text);
+    transition: all 0.3s ease;
+}
+
+.search-container input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.cart-btn {
+    background: none;
+    border: none;
+    color: var(--light-text);
+    font-size: 1.5rem;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.cart-btn:hover {
+    color: var(--primary-color);
+}
+
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--secondary-color);
+    color: var(--dark-bg);
+    font-size: 0.7rem;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hamburger-menu {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--light-text);
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+/* --- Hero Section --- */
+.hero-section {
+    background: url('../assets/images/index.png');
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+}
+
+.btn {
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--dark-bg);
+}
+
+.btn-primary:hover {
+    background-color: #55784E;
+}
+
+/* --- Featured Categories Section --- */
+.featured-categories {
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.featured-categories h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.category-card {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--light-text);
+    box-shadow: 0 4px 15px var(--shadow-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+}
+
+.category-card i {
+    font-size: 3rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+/* --- Product Grid Placeholder --- */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+    .nav-links, .nav-actions {
+        display: none;
+    }
+
+    .main-nav {
+        flex-wrap: wrap;
+    }
+
+    .hamburger-menu {
+        display: block;
+    }
+
+    .nav-links.active, .nav-actions.active {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .nav-links.active li {
+        width: 100%;
+        text-align: center;
+        margin: 0.5rem 0;
+    }
+
+    .mega-menu {
+        position: static;
+        width: 100%;
+        transform: none;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+        border: none;
+        box-shadow: none;
+    }
+
+    .search-container {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+}
+
+/* --- Products Page --- */
+.marketplace-page {
+    display: flex;
+    max-width: 1200px;
+    margin: 2rem auto;
+    gap: 2rem;
+    padding: 0 2rem;
+}
+
+.filters-container {
+    width: fit-content;
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    height: fit-content;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px; /* Adjust the spacing between items as needed */
+}
+
+.filters-container h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.filter-group {
+    margin-bottom: 1.5rem;
+}
+
+.filter-group h4 {
+    margin-bottom: 0.75rem;
+    color: var(--primary-color);
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+}
+
+/* Add these styles to your existing styles.css file */
+
+.filter-group select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    background-color: #333;
+    color: #f0f0f0;
+    border: 1px solid #555;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.filter-group select:focus {
+    outline: none;
+    border-color: #798C68;
+}
+
+.product-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.product-card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+.product-card.loaded {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+}
+
+.product-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.product-info {
+    padding: 1rem;
+    text-align: center;
+}
+
+.product-info h3 {
+    margin-bottom: 0.5rem;
+}
+
+.product-price {
+    font-weight: bold;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.add-to-cart-btn {
+    background-color: var(--primary-color);
+    color: var(--dark-bg);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #55784E;
+}
+
+/* --- Artisans Page --- */
+/* Artisans page specific styles */
+.artisans-page {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: auto;
+    color: #f0f0f0;
+}
+
+.artisan-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.artisan-card {
+    background-color: #2c2c2c;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
+    text-align: center;
+    opacity: 0;
+    transform: translateX(100%); /* Hides the card off-screen to the right */
+    transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+}
+
+.artisan-card.loaded {
+    opacity: 1;
+    transform: translateX(0); /* Slides the card to its final position */
+}
+
+.artisan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.artisan-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #798C68;
+    margin-bottom: 1rem;
+}
+
+.artisan-info h3 {
+    color: #f0f0f0;
+    margin: 0.5rem 0;
+}
+
+.artisan-location {
+    color: #ccc;
+    font-size: 0.9em;
+}
+
+.artisan-badge {
+    background-color: #5a6e4d;
+    color: #fff;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin: 0.5rem 0;
+}
+
+.artisan-bio {
+    font-size: 0.9em;
+    line-height: 1.5;
+    color: #ddd;
+    margin: 1rem 0;
+}
+
+.contact-artisan-btn {
+    display: inline-block;
+    background-color: #798C68;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.contact-artisan-btn:hover {
+    background-color: #5a6e4d;
+}
+
+/* --- Impact Dashboard Page --- */
+.impact-dashboard-page {
+    max-width: 800px;
+    margin: 4rem auto;
+    padding: 0 2rem;
+    text-align: center;
+}
+
+.impact-dashboard-page h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.impact-dashboard-page p {
+    font-size: 1.1rem;
+    color: #999;
+    margin-bottom: 2rem;
+}
+
+.impact-card {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    margin-bottom: 2rem;
+}
+
+.impact-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.progress-bar-container {
+    width: 100%;
+    background-color: #444;
+    border-radius: 20px;
+    height: 20px;
+    margin: 1rem 0;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: var(--secondary-color);
+    border-radius: 20px;
+    transition: width 1s ease-in-out;
+}
+
+/* --- Cart Page --- */
+.cart-page {
+    max-width: 900px;
+    margin: 4rem auto;
+    padding: 0 2rem;
+}
+
+.cart-page h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    background-color: var(--card-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.cart-item-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 1.5rem;
+}
+
+.cart-item-details {
+    flex: 1;
+}
+
+.cart-item-details h4 {
+    margin: 0 0 0.5rem 0;
+}
+
+.cart-item-price {
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
+#cart-total {
+    text-align: right;
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #444;
+}
+
+/* Add to your existing styles.css */
+.chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+/* --- Add to existing styles.css --- */
+
+.checkout-btn {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+}
+
+.checkout-btn:hover {
+    background-color: #5C77A2; /* A slightly darker shade of blue */
+}
+
+.payment-message {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    color: #6A9362; /* Green color for success message */
+    display: none; /* Initially hide the message */
+}
+
+
+/* For the discount message */
+.discount-message {
+    text-align: right;
+    font-size: 1.25rem;
+    color: #6A9362;
+    font-weight: bold;
+    margin-top: -0.5rem;
+}
+
+/* For the game container to show/hide it */
+#game-container {
+    display: none;
+}
+
+/* Contact Modal Pop-up */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #2c2c2c; /* Dark background */
+    color: #f0f0f0; /* Light text */
+    margin: auto;
+    padding: 2.5rem;
+    border-radius: 10px;
+    position: relative;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    animation: fadeIn 0.5s;
+}
+
+.close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #fff;
+    text-decoration: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+
+#contact-btn {
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: var(--dark-bg);
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 5%;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    transition: background-color 0.3s ease;
+}
+
+#recommend-btn
+{
+    font-size: 1em;
+}
+
+#main-text-container .empowering-title {
+    font-size: 3rem;
+    font-family: "Poppins", sans-serif; /* Modern font */
+    font-weight: 700;
+    color: var(--primary-color);
+    /*border-right: .15em solid orange;*/
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    margin-bottom: 5px;
+    animation: cursor-blink 1s infinite;
+}
+
+#main-text-container .empowering-subtitle {
+    font-family: "Lora", serif; /* More elegant serif font */
+    font-size: 1.3rem;
+    max-width: 700px;
+    margin: 1rem auto 2rem;
+    color: #ccc;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-in-out;
+     margin-top: 5px; 
+}
+
+#main-text-container .empowering-subtitle.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.empowering-title.typing-end {
+    border-right: none;
+    overflow: visible;
+}
+
+.empowering-title.typing-final {
+    border-right: none;
+    animation: none; /* Stop all animations */
+}
+
+/* Keyframes for the typing effect */
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+/* Keyframes for the blinking cursor */
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: rgb(70, 47, 3); }
+}
+
+/* Keyframes for the slide-in effect */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+
+
+/* -- Dark Theme -- */
+body.dark-mode {
+    --background-color: #1e1e1e;
+    --text-color: #f0f0f0;
+    --primary-color: #7d9e7d; /* A slightly different shade for contrast in dark mode */
+}
+
+/* -- Apply the variables to your elements -- */
+
+
+.nav-links, .nav-actions {
+    color: var(--light-text);
+}
+
+
+.theme-toggle {
+    color: var(--text-color);
+}
+
+/* Style the toggle button */
+.theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+.theme-toggle:hover {
+    color: var(--primary-color);
+}
+
+/* --- Cart Toast Notification --- */
+.cart-toast {
+    position: fixed;
+    top: 90px;
+    right: 30px;
+    background-color: #2C2C2C;
+    color: #E6E6E6;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+    z-index: 3000;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    border-left: 4px solid var(--primary-color);
+}
+
+.cart-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* ===============================
+   CONTACT PAGE FIX
+================================ */
+
+/* Page container */
+.page-container {
+    max-width: 1100px;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+}
+
+/* Contact card */
+.contact-card {
+    background: #1f1f1f;
+    border-radius: 14px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* Artisan header */
+.artisan-highlight {
+    background: linear-gradient(135deg, #3c5f4b, #2c3e34);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    color: #e9f5ee;
+}
+
+.artisan-highlight h2 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.artisan-highlight p {
+    margin-top: 0.5rem;
+    opacity: 0.9;
+}
+
+/* Two-column layout */
+.contact-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+}
+
+/* Contact info */
+.contact-info h3 {
+    margin-bottom: 0.8rem;
+}
+
+.contact-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-info li {
+    margin-bottom: 0.6rem;
+}
+
+/* Form styling */
+.contact-form-container input,
+.contact-form-container textarea {
+    width: 100%;
+    padding: 0.7rem;
+    border-radius: 6px;
+    border: none;
+    margin-top: 0.3rem;
+    background: #2b2b2b;
+    color: #fff;
+}
+
+.contact-form-container label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.submit-btn {
+    margin-top: 1rem;
+    background: #6fa57c;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+
+.submit-btn:hover {
+    background: #5c9168;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.artisan-actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1.2rem;
+    justify-content: center;
+}
+
+.artisan-btn {
+    text-decoration: none;
+    padding: 0.55rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.artisan-btn.primary {
+    background: #6fa57c;
+    color: #fff;
+}
+
+.artisan-btn.primary:hover {
+    background: #5a8f68;
+}
+
+.artisan-btn.secondary {
+    background: transparent;
+    color: #cfe8d6;
+    border: 1px solid #6fa57c;
+}
+
+.artisan-btn.secondary:hover {
+    background: #2f3f35;
+}
+
+footer {
+    margin-top: 4rem;
+}
+/* ===============================
+   CONTACT PAGE BACKGROUND FIX
+================================ */
+
+body:has(.contact-section) {
+    background: linear-gradient(
+        135deg,
+        #f4efe9,   /* soft cream */
+        #e6efe8    /* pastel sage */
+    );;
+
+;
+}
+
+/* ===============================
+   FOOTER QUICK LINKS FIX
+================================ */
+
+.footer-section.links ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.footer-section.links li {
+    margin-bottom: 0.8rem;
+}
+.footer-section.links li {
+    margin: 0;
+}
+
+.footer-section.links a {
+    display: inline-block;
+       padding: 0.6rem 1.6rem;
+    background: #d97c5f;      /* terracotta */
+    color: #ffffff;           /* dark readable text */
+    border-radius: 30px; 
+    text-decoration: none;
+    font-weight: 600;
+    border: 1px solid #b8d8c2;
+    transition: all 0.3s ease;
+}
+
+.footer-section.links a:hover {
+    background: #b9634a;
+    transform: translateY(-2px);
+
+}
+.footer-section.links ul {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* ===============================
+   CONTACT PAGE – HEADER FIX
+================================ */
+
+body.contact-page .sticky-header {
+    background: #f4efe9;
+    box-shadow: none;
+}
+
+body.contact-page .logo {
+    color: #2f4f3a;
+}
+
+body.contact-page .nav-links a {
+    color: #2f4f3a;
+    font-weight: 600;
+}
+
+body.contact-page .nav-links a:hover {
+    color: #6fa57c;
+}
+
+body.contact-page .search-container input {
+    background: #ffffff;
+    color: #2b2b2b;
+    border: 1px solid #ccc;
+}
+
+body.contact-page .cart-btn {
+    color: #2f4f3a;
+}
+/* ===============================
+   CONTACT PAGE – PASTEL BACKGROUND
+================================ */
+
+body.contact-page {
+    background: radial-gradient(
+        circle at top,
+        #f8f6f0 0%,
+        #eef3ee 60%,
+        #e6eadf 100%
+    );
+}
+
+body.contact-page .page-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* ===============================
+   CONTACT PAGE – HEADER FIX
+================================ */
+
+body.contact-page .sticky-header,
+body.contact-page header {
+    background: #f6f4ee;
+    box-shadow: none;
+}
+
+body.contact-page .logo {
+    color: #2f4f3e;
+}
+
+body.contact-page .nav-links a {
+    color: #2f4f3e;
+    font-weight: 600;
+}
+
+body.contact-page .nav-links a:hover {
+    color: #6a9362;
+}
+/* ===============================
+   CONTACT PAGE – FOOTER FIX
+================================ */
+
+body.contact-page footer {
+    background: #e6eadf;
+    color: #2f4f3e;
+    margin-top: 4rem;
+}
+
+body.contact-page footer h3 {
+    color: #2f4f3e;
+}
+
+body.contact-page footer a {
+    color: #4f6f5c;
+    font-weight: 500;
+}
+
+body.contact-page footer a:hover {
+    color: #2f4f3e;
+}
+
+body.contact-page .footer-bottom {
+    border-top: 1px solid #c9d3c1;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+}
+body.contact-page footer * {
+    opacity: 1 !important;
+}
+
+/* ===============================
+   FOOTER LINKS VISIBILITY FIX
+================================ */
+
+body.contact-page footer {
+    background-color: #e8efe4;
+}
+
+body.contact-page footer a {
+    color: #2f4f3e !important;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+body.contact-page footer a:hover {
+    color: #6a9362;
+    text-decoration: underline;
+}
+
+/* Remove any fading / opacity issues */
+body.contact-page footer ul li a {
+    opacity: 1 !important;
+}
+
+#challenge-product {
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+#challenge-image {
+    max-width: 180px;
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+
+#challenge-name {
+    font-size: 1.1rem;
+    color: #e6e6e6;
+}
+
+.artisan-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+}
+/* 🔥 FORCE FIX: Artisan buttons text visibility */
+.artisan-actions a {
+    font-size: 0.9rem !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+
+
+
+

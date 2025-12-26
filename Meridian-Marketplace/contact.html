@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Artisan Marketplace</title>
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script src="data.js" defer></script>
+    <script src="main.js" defer></script>
+</head>
+<body class="contact-page">
+    <header>
+        <div class="header-top">
+            <a href="index.html" class="logo">Artisan Alley</a>
+            <div class="header-actions">
+                <form id="search-form">
+                    <input type="text" id="search-bar" placeholder="Search for products...">
+                </form>
+                <a href="cart.html" class="cart-icon">🛒<span id="cart-count">0</span></a>
+            </div>
+            <div class="hamburger-menu" id="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="products.html">Products</a>
+                    <div class="dropdown-content">
+                        <a href="products.html?category=fashion">Fashion</a>
+                        <a href="products.html?category=handicrafts">Handicrafts</a>
+                        <a href="products.html?category=food">Food & Spices</a>
+                        <a href="products.html?category=wellness">Wellness</a>
+                    </div>
+                </li>
+                <li><a href="artisans.html">Artisans</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    
+        <main class="page-container">
+    <section class="contact-section contact-card">
+
+            <h2>Contact Us</h2>
+            <div id="artisan-info" class="artisan-highlight">
+
+  <h2 id="artisan-name"></h2>
+  <p id="artisan-location"></p>
+</div>
+
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Get in touch</h3>
+                    <p>We'd love to hear from you! Please reach out with any questions or feedback.</p>
+                    <ul>
+                        <li><strong>Email:</strong> info@artisan-alley.com</li>
+                        <li><strong>Phone:</strong> +1 (555) 123-4567</li>
+                        <li><strong>Address:</strong> 123 Artisan Lane, Craftsville, USA 12345</li>
+                    </ul>
+                </div>
+                <div class="contact-form-container">
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Send Message</button>
+                    </form>
+                    <p id="form-status" style="margin-top: 1rem;"></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h3>Artisan Alley</h3>
+                <p>Curating a collection of handcrafted goods from talented artisans worldwide.</p>
+            </div>
+            <div class="footer-section links">
+    <h3>Quick Links</h3>
+
+    <div class="footer-buttons">
+        <a href="products.html" class="footer-btn">Shop</a>
+        <a href="artisans.html" class="footer-btn outline">Artisans</a>
+    </div>
+</div>
+
+            <div class="footer-section contact">
+                <h3>Contact Info</h3>
+                <p>Email: info@artisan-alley.com</p>
+                <p>Phone: +1 (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2025 Artisan Alley. All Rights Reserved.
+        </div>
+    </footer>
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const artisanName = params.get('artisan');
+
+    if (!artisanName) return;
+
+    // Show artisan info section
+    const artisanInfo = document.getElementById('artisan-info');
+    const artisanNameEl = document.getElementById('artisan-name');
+    const artisanLocationEl = document.getElementById('artisan-location');
+
+    if (artisanInfo && artisanNameEl) {
+        artisanInfo.style.display = 'block';
+        artisanNameEl.textContent = `Contact ${artisanName}`;
+        artisanLocationEl.textContent = 'Artisan Partner';
+    }
+
+    // Auto-fill subject
+    const subjectInput = document.getElementById('subject');
+    if (subjectInput) {
+        subjectInput.value = `Inquiry for ${artisanName}`;
+    }
+});
+</script>
+
+
+
+</body>
+</html>

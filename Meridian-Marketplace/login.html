@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Meridian Login</title>
+<style>
+body{background:#111;color:white;font-family:sans-serif;display:flex;justify-content:center;align-items:center;height:100vh}
+.box{background:#222;padding:40px;border-radius:10px;width:300px}
+input,select,button{width:100%;margin:10px 0;padding:10px}
+button{background:#6B87C7;color:white;border:none}
+</style>
+</head>
+<body>
+
+<div class="box">
+<h2>Meridian Login</h2>
+
+<input id="name" placeholder="Name">
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+
+<select id="role">
+  <option value="customer">Customer</option>
+  <option value="artisan">Artisan</option>
+</select>
+
+<button onclick="register()">Register</button>
+<button onclick="login()">Login</button>
+
+<p id="msg"></p>
+</div>
+
+<script>
+async function register(){
+ const res = await fetch("http://localhost:5001/register",{
+ method:"POST",
+ headers:{"Content-Type":"application/json"},
+ body:JSON.stringify({
+   name:name.value,
+   email:email.value,
+   password:password.value,
+   role:role.value
+ })
+ });
+ document.getElementById("msg").innerText="Registered Successfully";
+}
+
+async function login(){
+ const res = await fetch("http://localhost:5001/login",{
+ method:"POST",
+ headers:{"Content-Type":"application/json"},
+ body:JSON.stringify({
+   email:email.value,
+   password:password.value
+ })
+ });
+
+ const data = await res.json();
+ if(data.token){
+   localStorage.setItem("token",data.token);
+   localStorage.setItem("role",data.role);
+   window.location.href = data.role=="artisan" ? "artisan-dashboard.html" : "index.html";
+ }
+ else alert(data.msg);
+}
+</script>
+
+</body>
+</html>

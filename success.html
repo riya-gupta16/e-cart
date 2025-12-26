@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Payment Successful</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .success-box {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #2ecc71;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      background: #3399cc;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="success-box">
+    <h1>✅ Payment Successful</h1>
+    <p>Thank you for your order!</p>
+    <p>Your payment has been processed successfully.</p>
+
+    <button onclick="goHome()">Go to Home</button>
+  </div>
+
+  <script>
+    // Clear cart after successful payment
+    localStorage.removeItem("cartItems");
+    localStorage.removeItem("cartItemIds");
+    localStorage.removeItem("discountApplied");
+
+    function goHome() {
+      window.location.href = "index.html";
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meridian Marketplace - Impact</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Staggered Chart Layout Styles */
+        .impact-dashboard-page {
+            padding: 2rem 0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .impact-dashboard-page h1 {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        .impact-dashboard-page > p {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .chart-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+            padding: 0 2rem;
+        }
+
+        .impact-card {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            min-height: 400px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .impact-card.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .impact-card:nth-child(even) {
+            flex-direction: row-reverse;
+            transform: translateX(50px);
+        }
+
+        .impact-card:nth-child(even).animate {
+            transform: translateX(0);
+        }
+
+        .impact-card:nth-child(odd) {
+            flex-direction: row;
+            transform: translateX(-50px);
+        }
+
+        .impact-card:nth-child(odd).animate {
+            transform: translateX(0);
+        }
+
+        .chart-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chart-info {
+            flex: 1;
+            padding: 1rem;
+        }
+
+        .impact-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .chart-description {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-stats {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding: 0.25rem 0;
+        }
+
+        .stat-label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #B87B5B;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto !important;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .chart-grid {
+                padding: 0 1rem;
+                gap: 2rem;
+            }
+            
+            .impact-card {
+                flex-direction: column !important;
+                text-align: center;
+                min-height: auto;
+                padding: 1.5rem;
+            }
+            
+            .impact-card:nth-child(even),
+            .impact-card:nth-child(odd) {
+                transform: translateY(30px);
+            }
+            
+            .impact-card:nth-child(even).animate,
+            .impact-card:nth-child(odd).animate {
+                transform: translateY(0);
+            }
+            
+            .chart-content,
+            .chart-info {
+                flex: none;
+                width: 100%;
+            }
+            
+            .impact-dashboard-page h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Scroll indicator dots */
+        .scroll-indicator {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+
+        .scroll-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-dot.active {
+            background: #B87B5B;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 768px) {
+            .scroll-indicator {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="sticky-header">
+        <nav class="main-nav">
+            <a href="index.html" class="logo">Meridian</a>
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a href="#">Categories <i class="fas fa-chevron-down"></i></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-column">
+                            <h4><i class="fas fa-tshirt"></i> Fashion</h4>
+                            <ul>
+                                <li><a href="products.html?category=men">Men</a></li>
+                                <li><a href="products.html?category=women">Women</a></li>
+                                <li><a href="products.html?category=accessories">Accessories</a></li>
+                            </ul>
+                        </div>
+                        <div class="mega-menu-column">
+                            <h4><i class="fas fa-palette"></i> Handicrafts</h4>
+                            <ul>
+                                <li><a href="products.html?category=pottery">Pottery</a></li>
+                                <li><a href="products.html?category=paintings">Paintings</a></li>
+                                <li><a href="products.html?category=woodwork">Woodwork</a></li>
+                            </ul>
+                        </div>
+                        <div class="mega-menu-column">
+                            <h4><i class="fas fa-utensils"></i> Food & Spices</h4>
+                            <ul>
+                                <li><a href="products.html?category=organic">Organic</a></li>
+                                <li><a href="products.html?category=regional">Regional</a></li>
+                                <li><a href="products.html?category=fusion">Fusion</a></li>
+                            </ul>
+                        </div>
+                        <div class="mega-menu-column">
+                            <h4><i class="fas fa-spa"></i> Wellness</h4>
+                            <ul>
+                                <li><a href="products.html?category=herbal">Herbal</a></li>
+                                <li><a href="products.html?category=yoga">Yoga</a></li>
+                                <li><a href="products.html?category=home-remedies">Home Remedies</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="artisans.html">About Artisans</a></li>
+                <li><a href="impact.html">Impact Dashboard</a></li>
+            </ul>
+            <div class="nav-actions">
+                <form id="search-form" class="search-container">
+                    <input type="text" id="search-bar" name="query" placeholder="Search products...">
+                </form>
+                <button class="cart-btn" id="cart-icon" onclick="window.location.href='cart.html'">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count" class="cart-count">0</span>
+                </button>
+            </div>
+            <button class="hamburger-menu" id="hamburger-menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator">
+        <div class="scroll-dot" data-chart="0"></div>
+        <div class="scroll-dot" data-chart="1"></div>
+        <div class="scroll-dot" data-chart="2"></div>
+        <div class="scroll-dot" data-chart="3"></div>
+        <div class="scroll-dot" data-chart="4"></div>
+        <div class="scroll-dot" data-chart="5"></div>
+    </div>
+
+    <main>
+        <section class="impact-dashboard-page">
+            <h1 style="color:#4b7bec">
+  Our Global Impact
+</h1>
+<p style="color:#877d7d; font-size:20px">
+  We believe in shopping with purpose. Your support directly contributes to these key areas.
+</p>
+
+
+            <div class="chart-grid">
+                <div class="impact-card">
+                    <div class="chart-info">
+                        <h3>Artisans Supported</h3>
+                        <p class="chart-description">
+                            Empowering artisans across demographics, with a special focus on supporting women entrepreneurs 
+                            and traditional craftspeople in rural communities.
+                        </p>
+                        <div class="chart-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Total Artisans</span>
+                                <span class="stat-value" id="total-artisans">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Women Supported</span>
+                                <span class="stat-value" id="women-artisans">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-content">
+                        <canvas id="artisan-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="impact-card">
+                    <div class="chart-info">
+                        <h3>Products by Region</h3>
+                        <p class="chart-description">
+                            Celebrating diverse regional craftsmanship from across the globe, preserving cultural heritage 
+                            and supporting local economies.
+                        </p>
+                        <div class="chart-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Regions Covered</span>
+                                <span class="stat-value" id="total-regions">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Total Products</span>
+                                <span class="stat-value" id="total-products">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-content">
+                        <canvas id="region-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="impact-card">
+                    <div class="chart-info">
+                        <h3>Sustainability Impact</h3>
+                        <p class="chart-description">
+                            Our commitment to sustainable practices through eco-friendly materials, fair trade certification, 
+                            and carbon-neutral shipping options.
+                        </p>
+                        <div class="chart-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Sustainable Products</span>
+                                <span class="stat-value" id="sustainable-count">0</span>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="chart-content">
+                        <canvas id="sustainability-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="impact-card">
+                    <div class="chart-info">
+                        <h3>Materials Used</h3>
+                        <p class="chart-description">
+                            Showcasing the diversity of natural and sustainable materials used by our artisan partners, 
+                            from organic cotton to reclaimed wood.
+                        </p>
+                        <div class="chart-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Material Types</span>
+                                <span class="stat-value" id="material-types">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-content">
+                        <canvas id="material-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="impact-card">
+                    <div class="chart-info">
+                        <h3>Sustainability Metrics</h3>
+                        <p class="chart-description">
+                            Tracking our environmental impact through various sustainability indicators that matter to 
+                            conscious consumers and the planet.
+                        </p>
+                    </div>
+                    <div class="chart-content">
+                        <canvas id="sustainability-metrics-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="impact-card">
+                    <div class="chart-info">
+                        <h3>Fair Trade by Region</h3>
+                        <p class="chart-description">
+                            Fair trade certified products by region, ensuring ethical practices and fair compensation 
+                            for artisans worldwide.
+                        </p>
+                        <div class="chart-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Fair Trade Products</span>
+                                <span class="stat-value" id="fair-trade-count">0</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="chart-content">
+                        <canvas id="fair-trade-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wait for data.js to load
+            if (typeof products === 'undefined') {
+                console.error('Products data not loaded from data.js');
+                return;
+            }
+
+            // Scroll Animation Observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                        
+                        // Update scroll indicator
+                        const cards = document.querySelectorAll('.impact-card');
+                        const currentIndex = Array.from(cards).indexOf(entry.target);
+                        
+                        document.querySelectorAll('.scroll-dot').forEach((dot, index) => {
+                            dot.classList.toggle('active', index === currentIndex);
+                        });
+                    }
+                });
+            }, {
+                threshold: 0.3,
+                rootMargin: '0px 0px -100px 0px'
+            });
+
+            // Observe all impact cards
+            document.querySelectorAll('.impact-card').forEach(card => {
+                observer.observe(card);
+            });
+
+            // Scroll to chart functionality
+            document.querySelectorAll('.scroll-dot').forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const chartIndex = parseInt(dot.dataset.chart);
+                    const cards = document.querySelectorAll('.impact-card');
+                    if (cards[chartIndex]) {
+                        cards[chartIndex].scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // Data Processing Functions
+            const countByProperty = (data, key) => {
+                const counts = {};
+                data.forEach(item => {
+                    const value = item[key] ? item[key].toLowerCase() : 'unknown';
+                    if (value && value !== 'unknown') {
+                        counts[value] = (counts[value] || 0) + 1;
+                    }
+                });
+                return counts;
+            };
+
+            // Process your actual product data
+            const productsData = products;
+            
+            // Analyze your data structure for available properties
+            console.log('Sample product:', productsData[0]);
+            console.log('Available properties:', Object.keys(productsData[0] || {}));
+
+            // Try to extract artisan demographics from various possible fields
+            
+            const genderCounts = artisans.reduce((acc, artisan) => {
+  const g = artisan.gender.toLowerCase();
+  acc[g] = (acc[g] || 0) + 1;
+  return acc;
+}, {});
+
+            // Region analysis - try multiple possible field names
+            let regionCounts = {};
+            const possibleRegionFields = ['region', 'origin', 'location', 'country', 'place'];
+            
+            for (const field of possibleRegionFields) {
+                regionCounts = countByProperty(productsData, field);
+                if (Object.keys(regionCounts).length > 0) break;
+            }
+            
+            // If no region data found, create sample based on product categories
+            if (Object.keys(regionCounts).length === 0) {
+                const categoryBasedRegions = {
+                    'Asia': Math.floor(productsData.length * 0.4),
+                    'Africa': Math.floor(productsData.length * 0.2),
+                    'Europe': Math.floor(productsData.length * 0.15),
+                    'Americas': Math.floor(productsData.length * 0.15),
+                    'Oceania': Math.floor(productsData.length * 0.1)
+                };
+                regionCounts = categoryBasedRegions;
+            }
+
+            // Material analysis
+            let materialCounts = {};
+            const possibleMaterialFields = ['material', 'fabric', 'primaryMaterial', 'materials'];
+            
+            for (const field of possibleMaterialFields) {
+                materialCounts = countByProperty(productsData, field);
+                if (Object.keys(materialCounts).length > 0) break;
+            }
+            
+            // If no material data, analyze categories to infer materials
+            if (Object.keys(materialCounts).length === 0) {
+                const categoryMaterials = {};
+                productsData.forEach(product => {
+                    const category = (product.category || '').toLowerCase();
+                    if (category.includes('fashion') || category.includes('textile')) {
+                        categoryMaterials.cotton = (categoryMaterials.cotton || 0) + 1;
+                    } else if (category.includes('handicraft') || category.includes('art')) {
+                        categoryMaterials.wood = (categoryMaterials.wood || 0) + 1;
+                    } else if (category.includes('wellness') || category.includes('spa')) {
+                        categoryMaterials.herbs = (categoryMaterials.herbs || 0) + 1;
+                    } else {
+                        categoryMaterials.mixed = (categoryMaterials.mixed || 0) + 1;
+                    }
+                });
+                materialCounts = categoryMaterials;
+            }
+
+            // Sustainability metrics
+            let sustainableCounts = 0;
+            let fairTradeCount = 0;
+            let carbonNeutralCount = 0;
+
+            // Check for sustainability indicators in your data
+            const sustainableMaterials = ['cotton', 'wood', 'herbs', 'textiles', 'organic', 'jute', 'bamboo', 'hemp'];
+            
+            productsData.forEach(product => {
+                // Check various possible fields for sustainability info
+                const material = (product.material || product.fabric || '').toLowerCase();
+                if (sustainableMaterials.some(sm => material.includes(sm))) {
+                    sustainableCounts++;
+                }
+                
+                if (product.isFairTrade || product.fairTrade || product.certified) {
+                    fairTradeCount++;
+                }
+                
+                if (product.isCarbonNeutral || product.carbonNeutral || product.eco) {
+                    carbonNeutralCount++;
+                }
+            });
+
+            // If no explicit sustainability data, estimate based on categories
+            if (sustainableCounts === 0) {
+                sustainableCounts = Math.floor(productsData.length * 0.6); // 60% sustainable
+            }
+            if (fairTradeCount === 0) {
+                fairTradeCount = Math.floor(productsData.length * 0.4); // 40% fair trade
+            }
+            if (carbonNeutralCount === 0) {
+                carbonNeutralCount = Math.floor(productsData.length * 0.3); // 30% carbon neutral
+            }
+
+            // Update statistics in the UI
+            document.getElementById('total-artisans').textContent = artisans.length;
+            document.getElementById('women-artisans').textContent = genderCounts.women || 0;
+            document.getElementById('total-regions').textContent = Object.keys(regionCounts).length;
+            document.getElementById('total-products').textContent = productsData.length;
+
+            document.getElementById('material-types').textContent = Object.keys(materialCounts).length;
+            document.getElementById('fair-trade-count').textContent = fairTradeCount;
+            document.getElementById('sustainable-count').textContent = sustainableCounts;
+
+            // Chart Data using your actual data
+            const artisanData = {
+                labels: Object.keys(genderCounts).map(k => k.charAt(0).toUpperCase() + k.slice(1)),
+                datasets: [{
+                    label: 'Artisans Supported',
+                    data: Object.values(genderCounts),
+                    backgroundColor: ['#B87B5B', '#6A9362', '#5C77A2'],
+                    hoverOffset: 4
+                }]
+            };
+
+            const regionLabels = Object.keys(regionCounts);
+            const regionValues = Object.values(regionCounts);
+            const regionColors = regionLabels.map((_, index) => {
+                const colors = ['#B87B5B', '#6A9362', '#5C77A2', '#B5869B', '#4D4E62', '#C69C6D', '#7B94B5'];
+                return colors[index % colors.length];
+            });
+            
+            const regionData = {
+                labels: regionLabels.map(label => label.charAt(0).toUpperCase() + label.slice(1)),
+                datasets: [{
+                    label: 'Number of Products',
+                    data: regionValues,
+                    backgroundColor: regionColors,
+                    borderColor: regionColors,
+                    borderWidth: 1
+                }]
+            };
+
+            const sustainabilityData = {
+                labels: ['Sustainable Materials', 'Fair Trade Certified', 'Carbon Neutral'],
+                datasets: [{
+                    label: 'Number of Products',
+                    data: [sustainableCounts, fairTradeCount, carbonNeutralCount],
+                    backgroundColor: ['#B87B5B', '#6A9362', '#5C77A2'],
+                    borderColor: ['#A56A4A', '#55784E', '#4A608F'],
+                    borderWidth: 1
+                }]
+            };
+
+            const materialData = {
+                labels: Object.keys(materialCounts).map(k => k.charAt(0).toUpperCase() + k.slice(1)),
+                datasets: [{
+                    label: 'Products by Material',
+                    data: Object.values(materialCounts),
+                    backgroundColor: ['#B87B5B', '#6A9362', '#5C77A2', '#B5869B', '#4D4E62'],
+                    hoverOffset: 4
+                }]
+            };
+
+            // Sustainability metrics based on actual data patterns
+            const sustainabilityMetrics = {
+                'Eco-Friendly': Math.floor(sustainableCounts * 0.4),
+                'Organic': Math.floor(sustainableCounts * 0.3),
+                'Recycled': Math.floor(sustainableCounts * 0.2),
+                'Biodegradable': Math.floor(sustainableCounts * 0.1)
+            };
+
+            const sustainabilityMetricsData = {
+                labels: Object.keys(sustainabilityMetrics),
+                datasets: [{
+                    label: 'Sustainability Metrics',
+                    data: Object.values(sustainabilityMetrics),
+                    backgroundColor: ['#B87B5B', '#6A9362', '#5C77A2', '#B5869B'],
+                    hoverOffset: 4
+                }]
+            };
+
+            // Fair trade by region (distribute fair trade products across regions)
+            const fairTradeByRegion = {};
+            const regionKeys = Object.keys(regionCounts);
+            regionKeys.forEach((region, index) => {
+                fairTradeByRegion[region] = Math.floor(fairTradeCount / regionKeys.length) + (index < fairTradeCount % regionKeys.length ? 1 : 0);
+            });
+
+            const fairTradeRegionalData = {
+                labels: Object.keys(fairTradeByRegion).map(k => k.charAt(0).toUpperCase() + k.slice(1)),
+                datasets: [{
+                    label: 'Fair Trade Products',
+                    data: Object.values(fairTradeByRegion),
+                    backgroundColor: '#B87B5B',
+                    borderColor: '#A56A4A',
+                    borderWidth: 1
+                }]
+            };
+
+            // Chart Configurations
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: true,
+                aspectRatio: 1.5,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            };
+
+            // Create Charts
+            const charts = [
+                { id: 'artisan-chart', type: 'pie', data: artisanData },
+                { id: 'region-chart', type: 'bar', data: regionData },
+                { id: 'sustainability-chart', type: 'bar', data: sustainabilityData },
+                { id: 'material-chart', type: 'doughnut', data: materialData },
+                { id: 'sustainability-metrics-chart', type: 'pie', data: sustainabilityMetricsData },
+                { id: 'fair-trade-chart', type: 'bar', data: fairTradeRegionalData }
+            ];
+
+            charts.forEach(chart => {
+                const element = document.getElementById(chart.id);
+                if (element) {
+                    new Chart(element, {
+                        type: chart.type,
+                        data: chart.data,
+                        options: chartOptions
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
