@@ -181,15 +181,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Filtering Logic ---
     function applyFilters() {
-        const selectedMaterials = Array.from(document.querySelectorAll('input[name="material"]:checked')).map(cb => cb.value.toLowerCase());
-        const selectedSustainability = Array.from(document.querySelectorAll('input[name="sustainabilityMetric"]:checked')).map(cb => cb.value.toLowerCase());
+        // 1. Get all selected values
+        const selectedMaterials = Array.from(document.querySelectorAll('input[name="material"]:checked'))
+            .map(cb => cb.value.toLowerCase());
+        const selectedSustainability = Array.from(document.querySelectorAll('input[name="sustainabilityMetric"]:checked'))
+            .map(cb => cb.value.toLowerCase());
 
+        // 2. Filter logic
         let filtered = window.meridian.products.filter(p => {
-            const materialMatch = selectedMaterials.length === 0 || selectedMaterials.includes(p.material.toLowerCase());
-            const sustainMatch = selectedSustainability.length === 0 || selectedSustainability.includes(p.sustainabilityMetric.toLowerCase());
+            // If no material is selected, materialMatch is ALWAYS true
+            const materialMatch = selectedMaterials.length === 0 || 
+                                selectedMaterials.includes(p.material.toLowerCase());
+            
+            // If no sustainability metric is selected, sustainMatch is ALWAYS true
+            const sustainMatch = selectedSustainability.length === 0 || 
+                                selectedSustainability.includes(p.sustainabilityMetric.toLowerCase());
+
             return materialMatch && sustainMatch;
         });
 
+        // 3. Render the result
         renderProducts(filtered);
     }
 
