@@ -1,6 +1,114 @@
-<h1>Welcome Artisan Dashboard</h1>
-<script>
-if(localStorage.getItem("role")!=="artisan"){
- window.location.href="login.html";
-}
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Artisan Dashboard - Meridian</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .dashboard-container { max-width: 800px; margin: 50px auto; padding: 20px; background: #222; border-radius: 12px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #6A9362; }
+        input, select, textarea { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #444; background: #333; color: white; }
+        .submit-btn { background: #6A9362; color: white; border: none; padding: 12px 20px; cursor: pointer; font-weight: bold; width: 100%; border-radius: 5px; }
+        .logout-btn { background: #C76B6B; color: white; border: none; padding: 5px 15px; cursor: pointer; float: right; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <button class="logout-btn" onclick="logout()">Logout</button>
+        <h2>Artisan Panel: Add New Product</h2>
+        <p>Fill in the details to list your handcrafted item on the marketplace.</p>
+        <hr style="border: 0.5px solid #444; margin: 20px 0;">
+
+        <form id="add-product-form">
+            <div class="form-group">
+                <label>Product Name</label>
+                <input type="text" id="p-name" required placeholder="e.g. Hand-carved Jute Bag">
+            </div>
+            <div style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>Price ($)</label>
+                    <input type="number" id="p-price" required>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Category</label>
+                    <select id="p-category">
+                        <option value="fashion">Fashion</option>
+                        <option value="handicrafts">Handicrafts</option>
+                        <option value="food">Food & Spices</option>
+                        <option value="wellness">Wellness</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Material</label>
+                <select id="p-material">
+                    <option value="jute">Jute</option>
+                    <option value="cotton">Cotton</option>
+                    <option value="wood">Wood</option>
+                    <option value="herbs">Herbs</option>
+                    <option value="clay">Clay</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Sustainability Metric</label>
+                <select id="p-metric">
+                    <option value="Organic">Organic</option>
+                    <option value="Biodegradable">Biodegradable</option>
+                    <option value="Handcrafted">Handcrafted</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Image URL</label>
+                <input type="text" id="p-image" placeholder="assets/images/product.webp">
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="p-desc" rows="3"></textarea>
+            </div>
+            <button type="submit" class="submit-btn">List Product</button>
+        </form>
+    </div>
+
+    <script>
+        // Security Check
+        if(localStorage.getItem("role") !== "artisan") window.location.href = "login.html";
+
+        document.getElementById('add-product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const productData = {
+                name: document.getElementById('p-name').value,
+                price: parseFloat(document.getElementById('p-price').value),
+                artisan: localStorage.getItem("userName") || "Unknown Artisan",
+                category: document.getElementById('p-category').value,
+                material: document.getElementById('p-material').value,
+                sustainabilityMetric: document.getElementById('p-metric').value,
+                image: document.getElementById('p-image').value || "assets/images/placeholder.webp",
+                description: document.getElementById('p-desc').value,
+                isFairTrade: true // Default for artisans
+            };
+
+            const res = await fetch("http://localhost:5000/api/products", {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+                body: JSON.stringify(productData)
+            });
+
+            if(res.ok) {
+                alert("Product listed successfully!");
+                location.reload();
+            } else {
+                alert("Failed to list product.");
+            }
+        });
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = "login.html";
+        }
+    </script>
+</body>
+</html>
